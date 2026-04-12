@@ -1,7 +1,7 @@
-const multer = require('multer');
 const DocumentSchema = require('../../model/schema/document')
 const fs = require('fs');
 const mongoose = require('mongoose');
+const { createUpload, ALLOWED_DOC_TYPES, MAX_DOC_SIZE } = require('../../middelwares/uploadConfig');
 
 
 const index = async (req, res) => {
@@ -45,31 +45,10 @@ const index = async (req, res) => {
 }
 
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const folderPath = 'uploads/document/';
-        fs.mkdirSync(folderPath, { recursive: true }); // Create the directory if it doesn't exist
-        cb(null, folderPath);
-    },
-    filename: function (req, file, cb) {
-        const uploadDir = 'uploads/document/';
-        const filePath = uploadDir + file.originalname;
-
-        if (fs.existsSync(filePath)) {
-            // File with the same name already exists, generate a new filename
-            const timestamp = Date.now() + Math.floor(Math.random() * 90);
-            cb(null, file.originalname.split('.')[0] + '-' + timestamp + '.' + file.originalname.split('.')[1]);
-        } else {
-            // File doesn't exist, use the original filename
-            cb(null, file.originalname);
-        }
-        // cb(null, file.originalname);
-    },
+const upload = createUpload('uploads/document', {
+    allowedTypes: ALLOWED_DOC_TYPES,
+    maxSize: MAX_DOC_SIZE,
 });
-
-
-
-const upload = multer({ storage: storage });
 
 const file = async (req, res) => {
     try {

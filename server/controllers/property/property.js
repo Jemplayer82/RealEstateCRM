@@ -3,12 +3,14 @@ const { Property } = require("../../model/schema/property");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const { createUpload, ALLOWED_IMAGE_TYPES, ALLOWED_DOC_TYPES, ALLOWED_MEDIA_TYPES, MAX_IMAGE_SIZE, MAX_DOC_SIZE, MAX_VIDEO_SIZE } = require("../../middelwares/uploadConfig");
 const { Contact } = require("../../model/schema/contact");
 const PhoneCall = require("../../model/schema/phoneCall");
 const { default: mongoose } = require("mongoose");
 const Email = require("../../model/schema/email");
 const ejs = require("ejs");
 const puppeteer = require("puppeteer");
+const sanitizeHtml = require("sanitize-html");
 const moment = require("moment");
 const quotes = require("../../model/schema/quotes");
 
@@ -236,34 +238,9 @@ const changeUnitStatus = async (req, res) => {
   }
 };
 
-const offerLetterStorage = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadDir = "uploads/offer-letter";
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-      const uploadDir = "uploads/offer-letter";
-      const filePath = path.join(uploadDir, file.originalname);
-
-      // Check if the file already exists in the destination directory
-      if (fs.existsSync(filePath)) {
-        // For example, you can append a timestamp to the filename to make it unique
-        const timestamp = Date.now() + Math.floor(Math.random() * 90);
-        cb(
-          null,
-          file.originalname.split(".")[0] +
-            "-" +
-            timestamp +
-            "." +
-            file.originalname.split(".")[1]
-        );
-      } else {
-        cb(null, file.originalname);
-      }
-    },
-  }),
+const offerLetterStorage = createUpload("uploads/offer-letter", {
+  allowedTypes: ALLOWED_IMAGE_TYPES,
+  maxSize: MAX_IMAGE_SIZE,
 });
 
 const getOrdinalSuffix = (number) => {
@@ -321,8 +298,15 @@ const genrateOfferLetter = async (req, res) => {
         <span style="font-size: 12px;">Page <span class="pageNumber"></span> / <span class="totalPages"></span></span>
       </div>`;
 
+    // Sanitize all string values from req.body before passing to template engine
+    const sanitizedBody = {};
+    const sanitizeOptions = { allowedTags: [], allowedAttributes: {} };
+    for (const [key, value] of Object.entries(req?.body || {})) {
+      sanitizedBody[key] = typeof value === 'string' ? sanitizeHtml(value, sanitizeOptions) : value;
+    }
+
     const htmlContnet = await ejs.renderFile(templatePath, {
-      ...req?.body,
+      ...sanitizedBody,
       property,
       installments: JSON?.parse(req?.body?.installments),
       description: description,
@@ -691,34 +675,9 @@ const deleteMany = async (req, res) => {
 // },
 // });
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadDir = "uploads/Property/PropertyPhotos";
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-      const uploadDir = "uploads/Property/PropertyPhotos";
-      const filePath = path.join(uploadDir, file.originalname);
-
-      // Check if the file already exists in the destination directory
-      if (fs.existsSync(filePath)) {
-        // For example, you can append a timestamp to the filename to make it unique
-        const timestamp = Date.now() + Math.floor(Math.random() * 90);
-        cb(
-          null,
-          file.originalname.split(".")[0] +
-            "-" +
-            timestamp +
-            "." +
-            file.originalname.split(".")[1]
-        );
-      } else {
-        cb(null, file.originalname);
-      }
-    },
-  }),
+const upload = createUpload("uploads/Property/PropertyPhotos", {
+  allowedTypes: ALLOWED_IMAGE_TYPES,
+  maxSize: MAX_IMAGE_SIZE,
 });
 
 const propertyPhoto = async (req, res) => {
@@ -747,34 +706,9 @@ const propertyPhoto = async (req, res) => {
   }
 };
 // --
-const virtualTours = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadDir = "uploads/Property/virtual-tours-or-videos";
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-      const uploadDir = "uploads/Property/virtual-tours-or-videos";
-      const filePath = path.join(uploadDir, file.originalname);
-
-      // Check if the file already exists in the destination directory
-      if (fs.existsSync(filePath)) {
-        // For example, you can append a timestamp to the filename to make it unique
-        const timestamp = Date.now() + Math.floor(Math.random() * 90);
-        cb(
-          null,
-          file.originalname.split(".")[0] +
-            "-" +
-            timestamp +
-            "." +
-            file.originalname.split(".")[1]
-        );
-      } else {
-        cb(null, file.originalname);
-      }
-    },
-  }),
+const virtualTours = createUpload("uploads/Property/virtual-tours-or-videos", {
+  allowedTypes: ALLOWED_MEDIA_TYPES,
+  maxSize: MAX_VIDEO_SIZE,
 });
 
 const VirtualToursorVideos = async (req, res) => {
@@ -803,34 +737,9 @@ const VirtualToursorVideos = async (req, res) => {
   }
 };
 
-const FloorPlansStorage = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadDir = "uploads/Property/floor-plans";
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-      const uploadDir = "uploads/Property/floor-plans";
-      const filePath = path.join(uploadDir, file.originalname);
-
-      // Check if the file already exists in the destination directory
-      if (fs.existsSync(filePath)) {
-        // For example, you can append a timestamp to the filename to make it unique
-        const timestamp = Date.now() + Math.floor(Math.random() * 90);
-        cb(
-          null,
-          file.originalname.split(".")[0] +
-            "-" +
-            timestamp +
-            "." +
-            file.originalname.split(".")[1]
-        );
-      } else {
-        cb(null, file.originalname);
-      }
-    },
-  }),
+const FloorPlansStorage = createUpload("uploads/Property/floor-plans", {
+  allowedTypes: ALLOWED_IMAGE_TYPES,
+  maxSize: MAX_IMAGE_SIZE,
 });
 
 const FloorPlans = async (req, res) => {
@@ -859,34 +768,9 @@ const FloorPlans = async (req, res) => {
   }
 };
 // --
-const PropertyDocumentsStorage = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadDir = "uploads/Property/property-documents";
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-      const uploadDir = "uploads/Property/property-documents";
-      const filePath = path.join(uploadDir, file.originalname);
-
-      // Check if the file already exists in the destination directory
-      if (fs.existsSync(filePath)) {
-        // For example, you can append a timestamp to the filename to make it unique
-        const timestamp = Date.now() + Math.floor(Math.random() * 90);
-        cb(
-          null,
-          file.originalname.split(".")[0] +
-            "-" +
-            timestamp +
-            "." +
-            file.originalname.split(".")[1]
-        );
-      } else {
-        cb(null, file.originalname);
-      }
-    },
-  }),
+const PropertyDocumentsStorage = createUpload("uploads/Property/property-documents", {
+  allowedTypes: ALLOWED_DOC_TYPES,
+  maxSize: MAX_DOC_SIZE,
 });
 
 const PropertyDocuments = async (req, res) => {

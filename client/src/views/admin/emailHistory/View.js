@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import {
   Box,
   Button,
@@ -364,7 +365,7 @@ const View = () => {
                         alignItems: "center",
                         padding: "50px 50px",
                       }}
-                      dangerouslySetInnerHTML={{ __html: data?.html }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data?.html || '') }}
                     />
                   )}
                 </pre>

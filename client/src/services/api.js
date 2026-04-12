@@ -1,6 +1,20 @@
 import axios from "axios";
 import { constant } from "constant";
 
+// Auto-logout on 401 — clears stored credentials and redirects to login
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("token");
+      window.location.href = "/";
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const postApi = async (path, data, login) => {
   try {
     let result = await axios?.post(constant?.baseUrl + path, data, {
@@ -19,7 +33,7 @@ export const postApi = async (path, data, login) => {
     }
     return result;
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
@@ -36,7 +50,7 @@ export const postApiBlob = async (path, data = {}) => {
 
     return result;
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
@@ -51,7 +65,7 @@ export const putApi = async (path, data, id) => {
     });
     return result;
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
@@ -69,7 +83,7 @@ export const deleteApi = async (path, param) => {
     }
     return result;
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
@@ -87,7 +101,7 @@ export const deleteManyApi = async (path, data) => {
     }
     return result;
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
@@ -112,7 +126,7 @@ export const getApi = async (path, id) => {
       return result;
     }
   } catch (e) {
-    console.error(e);
+    console.error("API request failed:", e?.response?.status || "unknown");
     return e;
   }
 };
