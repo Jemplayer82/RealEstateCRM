@@ -12,6 +12,7 @@ import {
   Grid,
   GridItem,
   IconButton,
+  Input,
   Select,
   Text,
 } from "@chakra-ui/react";
@@ -35,6 +36,9 @@ const Add = (props) => {
   const [propertyList, setPropertyList] = useState([]);
   const [data, setData] = useState([]);
   const [userModel, setUserModel] = useState(false);
+  const [mlsInput, setMlsInput] = useState("");
+  const [isMlsLoading, setIsMlsLoading] = useState(false);
+  const [mlsLinkedName, setMlsLinkedName] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -107,6 +111,39 @@ const Add = (props) => {
     props.onClose();
   };
 
+  const handleMlsLookupAndCreate = async () => {
+    if (!mlsInput.trim()) return;
+    try {
+      setIsMlsLoading(true);
+      const scrapeRes = await postApi("api/property/scrape-mls", { mls_id: mlsInput.trim() });
+      if (scrapeRes?.status !== 200 || !scrapeRes?.data?.data) {
+        toast.error(scrapeRes?.data?.error || "MLS number not found");
+        return;
+      }
+      const scrapedData = scrapeRes.data.data;
+      const moduleRes = await getApi("api/custom-field/?moduleName=Properties");
+      const propModuleId = moduleRes?.data?.[0]?._id;
+      if (!propModuleId) { toast.error("Could not find property module"); return; }
+      const createRes = await postApi("api/form/add", {
+        ...scrapedData,
+        lrNo: mlsInput.trim(),
+        createBy: user?._id,
+        moduleId: propModuleId,
+      });
+      if (createRes?.status !== 200) { toast.error("Failed to create property record"); return; }
+      const newProperty = createRes?.data?.data;
+      setFieldValue("associatedListing", newProperty?._id);
+      setMlsLinkedName(scrapedData.name || mlsInput.trim());
+      getPropertyList();
+      toast.success(`Property linked: ${scrapedData.name || mlsInput.trim()}`);
+    } catch (e) {
+      console.error(e);
+      toast.error("Error looking up MLS number");
+    } finally {
+      setIsMlsLoading(false);
+    }
+  };
+
   const getPropertyList = async () => {
     let result = await getApi(
       user?.role === "superAdmin"
@@ -144,6 +181,40 @@ const Add = (props) => {
               errors={errors}
               touched={touched}
             />
+            {values?.listedFor === "Selling" && (
+              <Grid templateColumns="repeat(12, 1fr)" gap={3} mt={2}>
+                <GridItem colSpan={{ base: 12 }}>
+                  <FormLabel display="flex" ms="4px" fontSize="sm" fontWeight="500" mb="8px">
+                    MLS Number
+                  </FormLabel>
+                  <Flex>
+                    <Input
+                      value={mlsInput}
+                      onChange={(e) => setMlsInput(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") handleMlsLookupAndCreate(); }}
+                      placeholder="Enter MLS number to auto-create listing"
+                      fontSize="sm"
+                      fontWeight="500"
+                    />
+                    <Button
+                      ml={2}
+                      size="sm"
+                      variant="brand"
+                      onClick={handleMlsLookupAndCreate}
+                      isLoading={isMlsLoading}
+                      disabled={isMlsLoading || !mlsInput.trim()}
+                    >
+                      Link
+                    </Button>
+                  </Flex>
+                  {mlsLinkedName && (
+                    <Text fontSize="sm" color="green.500" mt={1}>
+                      ✓ Linked: {mlsLinkedName}
+                    </Text>
+                  )}
+                </GridItem>
+              </Grid>
+            )}
             <Grid templateColumns="repeat(12, 1fr)" gap={3} mt={2}>
               <GridItem colSpan={{ base: 12 }}>
                 <FormLabel
