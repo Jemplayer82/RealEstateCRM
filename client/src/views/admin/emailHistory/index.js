@@ -192,16 +192,6 @@ const Index = (props) => {
         </Text>
       ),
     },
-    { Header: "timestamp", accessor: "timestamp" },
-    {
-      Header: "Created",
-      accessor: "created",
-      cell: ({ row }) => (
-        <Text fontSize="sm" fontWeight="700">
-          {moment(row?.values?.timestamp).format("(DD/MM) h:mma")}
-        </Text>
-      ),
-    },
     ...(permission?.update || permission?.view || permission?.delete
       ? [actionHeader]
       : []),

@@ -8,17 +8,23 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import Spinner from "components/spinner/Spinner";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { postApi } from "services/api";
+import { toast } from "react-toastify";
 import { generateValidationSchema } from "utils";
 import CustomForm from "utils/customForm";
 import * as yup from "yup";
 
 const Add = (props) => {
   const [isLoding, setIsLoding] = useState(false);
+  const [mlsNumber, setMlsNumber] = useState("");
+  const [isMlsLoding, setIsMlsLoding] = useState(false);
 
   const initialFieldValues = Object?.fromEntries(
     (props?.propertyData?.fields || [])?.map((field) => [field?.name, ""]),
@@ -70,6 +76,40 @@ const Add = (props) => {
     }
   };
 
+  const handleMlsLookup = async () => {
+    if (!mlsNumber.trim()) return;
+    try {
+      setIsMlsLoding(true);
+      const response = await postApi("api/property/scrape-mls", { mls_id: mlsNumber.trim() });
+      if (response?.status === 200 && response?.data?.success) {
+        const d = response.data.data;
+        const updates = {};
+        if (d.name !== undefined) updates.name = d.name;
+        if (d.lrNo !== undefined) updates.lrNo = d.lrNo;
+        if (d.status !== undefined) updates.status = d.status;
+        if (d.yearBuilt !== undefined && d.yearBuilt !== null) updates.yearBuilt = String(d.yearBuilt);
+        if (d.propertyDescription !== undefined) updates.propertyDescription = d.propertyDescription;
+        if (d.location !== undefined) updates.location = d.location;
+        if (d.flooringType !== undefined) updates.flooringType = d.flooringType;
+        if (d.parking !== undefined) updates.parking = d.parking;
+        if (d.Floor !== undefined && d.Floor !== null) updates.Floor = d.Floor;
+        if (d.price !== undefined && d.price !== null) updates.price = d.price;
+        if (d.beds !== undefined && d.beds !== null) updates.beds = d.beds;
+        if (d.baths !== undefined && d.baths !== null) updates.baths = d.baths;
+        if (d.sqft !== undefined && d.sqft !== null) updates.sqft = d.sqft;
+        formik.setValues({ ...formik.values, ...updates });
+        toast.success("Property data loaded from MLS");
+      } else {
+        toast.error(response?.data?.error || "MLS number not found");
+      }
+    } catch (e) {
+      toast.error("MLS number not found");
+      console.log(e);
+    } finally {
+      setIsMlsLoding(false);
+    }
+  };
+
   return (
     <div>
       <Drawer isOpen={props?.isOpen} size={props?.size}>
@@ -84,6 +124,48 @@ const Add = (props) => {
             <IconButton onClick={props?.onClose} icon={<CloseIcon />} />
           </DrawerHeader>
           <DrawerBody>
+            <div
+              style={{
+                border: "1px solid #e2e8f0",
+                borderRadius: "8px",
+                padding: "16px",
+                marginBottom: "20px",
+                background: "#f7fafc",
+              }}
+            >
+              <p
+                style={{
+                  fontWeight: "600",
+                  fontSize: "14px",
+                  marginBottom: "10px",
+                  color: "#2d3748",
+                }}
+              >
+                MLS Number Lookup
+              </p>
+              <InputGroup size="sm">
+                <Input
+                  placeholder="Enter MLS number"
+                  value={mlsNumber}
+                  onChange={(e) => setMlsNumber(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleMlsLookup(); }}
+                  background="white"
+                  pr="80px"
+                />
+                <InputRightElement width="80px">
+                  <Button
+                    size="xs"
+                    variant="brand"
+                    onClick={handleMlsLookup}
+                    disabled={isMlsLoding || !mlsNumber.trim()}
+                    height="24px"
+                    minWidth="68px"
+                  >
+                    {isMlsLoding ? <Spinner /> : "Lookup"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </div>
             <CustomForm
               moduleData={props?.propertyData}
               values={values}

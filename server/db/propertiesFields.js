@@ -14,7 +14,7 @@ const propertiesFields = [
       "options": [],
       "validation": [
         {
-          "require": true,
+          "require": false,
           "message": ""
         }
       ]
@@ -32,8 +32,8 @@ const propertiesFields = [
       options: [],
       validation: [
         {
-          require: false,
-          message: "",
+          require: true,
+          message: "MLS Number is required",
         },
       ],
     },
@@ -111,7 +111,7 @@ const propertiesFields = [
       "isView": false,
       "validation": [
         {
-          "require": true,
+          "require": false,
           "message": ""
         }
       ]

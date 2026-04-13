@@ -800,6 +800,27 @@ const PropertyDocuments = async (req, res) => {
   }
 };
 
+const scrapeMls = async (req, res) => {
+  try {
+    const { mls_id } = req.body;
+    if (!mls_id) {
+      return res.status(400).json({ success: false, error: "mls_id is required" });
+    }
+
+    const response = await fetch("http://python-service:5002/scrape", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mls_id }),
+    });
+
+    const data = await response.json();
+    return res.status(response.status).json(data);
+  } catch (err) {
+    console.error("Failed to scrape MLS:", err);
+    return res.status(500).json({ success: false, error: "Failed to reach scraping service" });
+  }
+};
+
 module.exports = {
   index,
   add,
@@ -823,4 +844,5 @@ module.exports = {
   FloorPlans,
   PropertyDocumentsStorage,
   PropertyDocuments,
+  scrapeMls,
 };

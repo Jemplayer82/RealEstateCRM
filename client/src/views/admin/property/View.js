@@ -144,28 +144,6 @@ const View = () => {
         </Link>
       ),
     },
-    {
-      Header: "time stamp",
-      accessor: "timestamp",
-      cell: (cell) => (
-        <div className="selectOpt">
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {moment(cell?.value).fromNow()}
-          </Text>
-        </div>
-      ),
-    },
-    {
-      Header: "Created",
-      accessor: "createBy",
-      cell: (cell) => (
-        <div className="selectOpt">
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {moment(cell?.row?.values?.timestamp)?.format("h:mma (DD/MM)")}
-          </Text>
-        </div>
-      ),
-    },
   ];
   const contactColumns = [
     { Header: "Title", accessor: "title" },
@@ -210,28 +188,6 @@ const View = () => {
             {cell?.value || " - "}
           </Text>
         </Link>
-      ),
-    },
-    {
-      Header: "time stamp",
-      accessor: "timestamp",
-      cell: (cell) => (
-        <div className="selectOpt">
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {moment(cell?.value).fromNow()}
-          </Text>
-        </div>
-      ),
-    },
-    {
-      Header: "Created",
-      accessor: "createBy",
-      cell: (cell) => (
-        <div className="selectOpt">
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {moment(cell?.row?.values?.timestamp)?.format("h:mma (DD/MM)")}
-          </Text>
-        </div>
       ),
     },
   ];

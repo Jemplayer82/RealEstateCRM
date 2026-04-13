@@ -7,6 +7,13 @@ services:
     ports:
       - "27017:27017"
 
+  python-service:
+    build: ./python-service
+    container_name: realestatecrm-python-1
+    restart: unless-stopped
+    networks:
+      - default
+
   server:
     build: ./server
     restart: unless-stopped
@@ -22,6 +29,7 @@ services:
       NODE_ENV: production
     depends_on:
       - mongo
+      - python-service
 
   client:
     build: ./client

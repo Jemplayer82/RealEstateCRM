@@ -228,6 +228,10 @@ const leadFields = [
         name: "Buy",
         value: "Buy",
       },
+      {
+        name: "Selling",
+        value: "Selling",
+      },
     ],
     validation: [
       {

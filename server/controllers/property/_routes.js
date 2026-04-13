@@ -5,6 +5,7 @@ const auth = require("../../middelwares/auth");
 const router = express.Router();
 
 router.get("/", auth, property.index);
+router.post("/scrape-mls", auth, property.scrapeMls);
 router.post("/add", auth, property.add);
 router.post("/add-units/:id", auth, property.addUnits);
 router.put("/edit-unit/:id", auth, property.editUnit);
