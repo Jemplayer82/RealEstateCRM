@@ -77,7 +77,7 @@ const add = async (req, res) => {
             return res.status(400).send({ success: false, message: "moduleId is required" });
         }
 
-        const customField = await CustomField.findById(req.body?.moduleId).select("moduleName");
+        const customField = await CustomField.findById(req.body?.moduleId).select("moduleName fields");
 
         if (!customField) {
             return res.status(404).send({ success: false, message: "Module not found" });
@@ -95,6 +95,24 @@ const add = async (req, res) => {
         if (!ExistingModel) {
             return res.status(500).send({ success: false, message: 'Model not found' });
         }
+
+        // Normalize tel/Number fields: strip non-digits so formatted phone strings don't fail cast
+        if (customField.fields && Array.isArray(customField.fields)) {
+            customField.fields.forEach(field => {
+                if ((field.type === 'tel' || field.backendType === 'Number') && req.body[field.name] !== undefined) {
+                    const digits = String(req.body[field.name]).replace(/\D/g, '');
+                    req.body[field.name] = digits ? Number(digits) : undefined;
+                }
+            });
+        }
+
+        // Strip empty-string values so they don't fail ObjectId casting
+        Object.keys(req.body).forEach(key => {
+            if (req.body[key] === '' || req.body[key] === undefined) {
+                delete req.body[key];
+            }
+        });
+
         req.body.updatedDate = new Date();
         req.body.deleted = false;
 
@@ -187,7 +205,7 @@ const edit = async (req, res) => {
             return res.status(400).send({ success: false, message: "moduleId is required" });
         }
 
-        const customField = await CustomField.findOne({ _id: req.body?.moduleId }).select("moduleName");
+        const customField = await CustomField.findOne({ _id: req.body?.moduleId }).select("moduleName fields");
 
         if (!customField) {
             return res.status(404).send({ success: false, message: "Module not found" });
@@ -207,9 +225,19 @@ const edit = async (req, res) => {
             return res.status(500).send({ success: false, message: 'Invalid model' });
         }
 
+        // Normalize tel/Number fields: strip non-digits so formatted phone strings don't fail cast
+        if (customField.fields && Array.isArray(customField.fields)) {
+            customField.fields.forEach(field => {
+                if ((field.type === 'tel' || field.backendType === 'Number') && req.body[field.name] !== undefined) {
+                    const digits = String(req.body[field.name]).replace(/\D/g, '');
+                    req.body[field.name] = digits ? Number(digits) : undefined;
+                }
+            });
+        }
+
         // Strip empty-string values so they don't fail ObjectId casting
         const sanitizedBody = Object.fromEntries(
-            Object.entries(req.body).filter(([, v]) => v !== "")
+            Object.entries(req.body).filter(([, v]) => v !== "" && v !== undefined)
         );
 
         const result = await ExistingModel.findOneAndUpdate(
