@@ -25,7 +25,20 @@ const index = async (req, res) => {
     .exec();
 
   const result = allData.filter((item) => item.createBy !== null);
-  res.send(result);
+
+  // Attach associated clients to each property (reverse lookup via interestProperty)
+  const allClients = await Client.find({ deleted: false }, { fullName: 1, interestProperty: 1 });
+  const propertiesWithClients = result.map((prop) => {
+    const propObj = prop.toObject ? prop.toObject() : prop;
+    const linked = allClients
+      .filter((c) => c.interestProperty?.some((ip) => String(ip) === String(prop._id)))
+      .map((c) => c.fullName)
+      .join(", ");
+    propObj.clientNames = linked || "";
+    return propObj;
+  });
+
+  res.send(propertiesWithClients);
 };
 
 const add = async (req, res) => {

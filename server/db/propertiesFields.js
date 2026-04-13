@@ -1,7 +1,7 @@
 const propertiesFields = [
     {
       "name": "name",
-      "label": "Name",
+      "label": "Address",
       "type": "text",
       "fixed": true,
       "isDefault": false,

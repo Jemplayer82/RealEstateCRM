@@ -130,7 +130,17 @@ const Index = () => {
                 <div className="selectOpt">
                   <Text
                     onClick={() => {
-                      navigate(`/propertyView/${cell?.row?.original?._id}`);
+                      const address =
+                        cell?.row?.original?.location ||
+                        cell?.row?.original?.name ||
+                        cell?.value ||
+                        "";
+                      if (address) {
+                        window.open(
+                          `https://www.zillow.com/homes/${encodeURIComponent(address)}_rb/`,
+                          "_blank"
+                        );
+                      }
                     }}
                     me="10px"
                     sx={{
@@ -150,9 +160,16 @@ const Index = () => {
               ),
             })) || []
         : []),
-      ...(result?.payload?.data?.[0]?.fields || []) // Ensure result.payload[0].fields is an array
-        .filter((field) => field?.isTableField === true && !field?.isView) // Filter out fields where isTableField is true
+      ...(result?.payload?.data?.[0]?.fields || [])
+        .filter((field) => field?.isTableField === true && !field?.isView)
         .map((field) => ({ Header: field?.label, accessor: field?.name })),
+      {
+        Header: "Client",
+        accessor: "clientNames",
+        cell: (cell) => (
+          <Text fontSize="sm">{cell?.value || "-"}</Text>
+        ),
+      },
       ...(permission?.update || permission?.view || permission?.delete
         ? [actionHeader]
         : []),
