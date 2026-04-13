@@ -9,6 +9,7 @@ const clientFields = [
     backendType: "String",
     editable: false,
     isTableField: true,
+    isView: true,
     options: [],
     validation: [
       {
