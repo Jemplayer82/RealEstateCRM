@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { getApi } from "services/api";
 import { HasAccess } from "../../../redux/accessUtils";
+import { formatPhoneUS } from 'utils/phone';
 import CommonCheckTable from "../../../components/reactTable/checktable";
 import { SearchIcon } from "@chakra-ui/icons";
 import { CiMenuKebab } from "react-icons/ci";
@@ -126,7 +127,7 @@ const Index = (props) => {
   const tableColumns = [
     { Header: "#", accessor: "_id", isSortable: false, width: 10 },
     {
-      Header: "Recipient",
+      Header: "Phone Number",
       accessor: "recipient",
       cell: (cell) => (
         <Link to={`/phone-call/${cell?.row?.values._id}`}>
@@ -139,7 +140,7 @@ const Index = (props) => {
             fontSize="sm"
             fontWeight="700"
           >
-            {cell?.value || " - "}
+            {formatPhoneUS(cell?.value) || " - "}
           </Text>
         </Link>
       ),

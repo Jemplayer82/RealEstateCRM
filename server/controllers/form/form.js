@@ -207,9 +207,14 @@ const edit = async (req, res) => {
             return res.status(500).send({ success: false, message: 'Invalid model' });
         }
 
+        // Strip empty-string values so they don't fail ObjectId casting
+        const sanitizedBody = Object.fromEntries(
+            Object.entries(req.body).filter(([, v]) => v !== "")
+        );
+
         const result = await ExistingModel.findOneAndUpdate(
             { _id: req.params.id },
-            { $set: req.body },
+            { $set: sanitizedBody },
             { new: true }
         );
 

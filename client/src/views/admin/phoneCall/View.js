@@ -159,7 +159,7 @@ const View = () => {
                       color={"blackAlpha.900"}
                     >
                       {" "}
-                      Recipient{" "}
+                      Phone Number{" "}
                     </Text>
                     <Text>{data?.recipient ? data?.recipient : " - "}</Text>
                   </GridItem>

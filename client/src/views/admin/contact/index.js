@@ -32,6 +32,7 @@ import { fetchContactData } from "../../../redux/slices/contactSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContactCustomFiled } from "../../../redux/slices/contactCustomFiledSlice";
 import { toast } from "react-toastify";
+import { formatPhoneUS } from 'utils/phone';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -186,7 +187,9 @@ const Index = () => {
                     fontSize="sm"
                     fontWeight="700"
                   >
-                    {cell?.value || "-"}
+                    {field?.type === "tel"
+                      ? formatPhoneUS(cell?.value) || "-"
+                      : cell?.value || "-"}
                   </Text>
                 </div>
               ),
@@ -194,7 +197,13 @@ const Index = () => {
         : []),
       ...(result?.payload?.data?.[0]?.fields || []) // Check if fields is defined, if not, use empty array
         ?.filter((field) => field?.isTableField === true && !field?.isView) // Filter out fields where isTableField is true
-        ?.map((field) => ({ Header: field?.label, accessor: field?.name })),
+        ?.map((field) => ({
+          Header: field?.label,
+          accessor: field?.name,
+          cell: (cell) => field?.type === "tel"
+            ? formatPhoneUS(cell?.value) || " - "
+            : cell?.value || " - ",
+        })),
       ...(permission?.update || permission?.view || permission?.delete
         ? [actionHeader]
         : []),

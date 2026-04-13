@@ -185,7 +185,7 @@ const AddPhoneCall = (props) => {
                 fontWeight="500"
                 mb="8px"
               >
-                Recipient<Text color={"red"}>*</Text>
+                Phone Number<Text color={"red"}>*</Text>
               </FormLabel>
               <Input
                 fontSize="sm"
