@@ -110,9 +110,9 @@ function ChangeAccess(props) {
   //     return item;
   //   });
   //   const leadsIndex = values.access.findIndex(accessItem => accessItem.title === "Leads");
-  //   const contactsIndex = values.access.findIndex(accessItem => accessItem.title === "Contacts");
+  //   const contactsIndex = values.access.findIndex(accessItem => accessItem.title === "Clients");
 
-  //   const lc = ((updatedAccess[index]?.title === "Leads" || updatedAccess[index]?.title === "Contacts") && (!updatedAccess[contactsIndex]?.view && !updatedAccess[leadsIndex]?.view))
+  //   const lc = ((updatedAccess[index]?.title === "Leads" || updatedAccess[index]?.title === "Clients") && (!updatedAccess[contactsIndex]?.view && !updatedAccess[leadsIndex]?.view))
 
   //   const mm = updatedAccess?.map((i, idx) => {
   //     let newItem = { ...i };
@@ -138,7 +138,7 @@ function ChangeAccess(props) {
         (accessItem) => accessItem?.title === "Leads",
       );
       const contactsIndex = values?.access?.findIndex(
-        (accessItem) => accessItem?.title === "Contacts",
+        (accessItem) => accessItem?.title === "Clients",
       );
 
       const updatedAccess = values?.access?.map((item, idx) => {
@@ -154,7 +154,7 @@ function ChangeAccess(props) {
         return item;
       });
 
-      // If both Contacts and Leads lose view, disable Emails/Calls/Meetings
+      // If both Clients and Leads lose view, disable Emails/Calls/Meetings
       const finalUpdatedAccess = updatedAccess.map((item) => {
         if (
           !updatedAccess[contactsIndex]?.view &&
@@ -189,7 +189,7 @@ function ChangeAccess(props) {
   const disable = (cell) => {
     if (["Emails", "Calls", "Meetings"].includes(cell?.title)) {
       return !values?.access?.some(
-        (i) => (i?.title === "Contacts" || i?.title === "Leads") && i?.view,
+        (i) => (i?.title === "Clients" || i?.title === "Leads") && i?.view,
       );
     }
     return false;

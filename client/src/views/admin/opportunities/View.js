@@ -891,8 +891,8 @@ const View = (props) => {
                             </GridItem>
                             <GridItem colSpan={{ base: 2, md: 1 }} >
                                 <Text fontSize="sm" fontWeight="bold" color={'blackAlpha.900'}> Assign To  </Text>
-                                <Link to={data?.assignTo ? opportunityAccess?.view && `/contactView/${data?.assignTo}` : leadAccess?.view && `/leadView/${data?.assignToLead}`}>
-                                    <Text color={(data?.category === 'contact' && (opportunityAccess?.view || user?.role === 'superAdmin')) ? 'brand.600' : (leadAccess?.view || user?.role === 'superAdmin' && data?.category === 'lead') ? 'brand.600' : 'blackAlpha.900'} sx={{ '&:hover': { color: 'blue.500', textDecoration: 'underline' } }}>{data?.assignToName ? data?.assignToName : ' - '}</Text>
+                                <Link to={data?.assignTo ? opportunityAccess?.view && `/clientView/${data?.assignTo}` : leadAccess?.view && `/leadView/${data?.assignToLead}`}>
+                                    <Text color={(data?.category === 'client' && (opportunityAccess?.view || user?.role === 'superAdmin')) ? 'brand.600' : (leadAccess?.view || user?.role === 'superAdmin' && data?.category === 'lead') ? 'brand.600' : 'blackAlpha.900'} sx={{ '&:hover': { color: 'blue.500', textDecoration: 'underline' } }}>{data?.assignToName ? data?.assignToName : ' - '}</Text>
                                 </Link>
                             </GridItem>
                             <GridItem colSpan={{ base: 2, md: 1 }} >

@@ -21,7 +21,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import Spinner from "components/spinner/Spinner";
 import { useFormik } from "formik";
@@ -62,15 +62,15 @@ const AddEdit = (props) => {
   const today = new Date()?.toISOString()?.split("T")[0];
   const todayTime = new Date()?.toISOString()?.split(".")[0];
 
-  const [leadAccess, contactAccess] = HasAccess(["Leads", "Contacts"]);
+  const [leadAccess, contactAccess] = HasAccess(["Leads", "Clients"]);
 
-  const contactData = useSelector((state) => state?.contactData?.data);
+  const contactData = useSelector((state) => state?.clientData?.data);
 
   const initialValues = {
     title: "",
     category:
       props?.leadContect === "contactView"
-        ? "Contact"
+        ? "Client"
         : props?.leadContect === "leadView"
           ? "Lead"
           : "None",
@@ -220,9 +220,9 @@ const AddEdit = (props) => {
   useEffect(async () => {
     values.start = props?.date;
     if (view === true) {
-      if (values?.category === "Contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "Client" && assignToContactData?.length <= 0) {
         setAssignToContactData(contactData);
-        // result = await getApi(user.role === 'superAdmin' ? 'api/contact/' : `api/contact/?createBy=${user._id}`)
+        // result = await getApi(user.role === 'superAdmin' ? 'api/client/' : `api/client/?createBy=${user._id}`)
         // setAssignToContactData(result?.data)
       } else if (values?.category === "Lead" && assignToLeadData?.length <= 0) {
         setAssignToLeadData(leadData);
@@ -231,13 +231,13 @@ const AddEdit = (props) => {
       try {
         let result;
         if (
-          values?.category === "Contact" &&
+          values?.category === "Client" &&
           assignToContactData?.length <= 0
         ) {
           result = await getApi(
             user.role === "superAdmin"
-              ? "api/contact/"
-              : `api/contact/?createBy=${user._id}`
+              ? "api/client/"
+              : `api/client/?createBy=${user._id}`
           );
           setAssignToContactData(result?.data);
         } else if (
@@ -275,7 +275,7 @@ const AddEdit = (props) => {
         </ModalHeader>
         <ModalBody overflowY={"auto"} height={"700px"}>
           {/* Contact Model  */}
-          <ContactModel
+          <ClientModel
             isOpen={contactModelOpen}
             data={assignToContactData}
             onClose={setContactModel}
@@ -347,7 +347,7 @@ const AddEdit = (props) => {
                     <Stack direction="row">
                       <Radio value="None">None</Radio>
                       {props?.leadContect === "contactView" && (
-                        <Radio value="Contact">Contact</Radio>
+                        <Radio value="Client">Client</Radio>
                       )}
                       {props?.leadContect === "leadView" && (
                         <Radio value="Lead">Lead</Radio>
@@ -356,7 +356,7 @@ const AddEdit = (props) => {
                         <>
                           {(user?.role === "superAdmin" ||
                             contactAccess?.create) && (
-                            <Radio value="Contact">Contact</Radio>
+                            <Radio value="Client">Client</Radio>
                           )}
                           {(user?.role === "superAdmin" ||
                             leadAccess?.create) && (
@@ -405,7 +405,7 @@ const AddEdit = (props) => {
                     errors.description}
                 </Text>
               </GridItem>
-              {values?.category === "Contact" ? (
+              {values?.category === "Client" ? (
                 <>
                   <GridItem colSpan={{ base: 12, md: 6 }}>
                     <FormLabel
@@ -438,7 +438,7 @@ const AddEdit = (props) => {
                         {assignToContactData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.firstName} ${item?.lastName}`
                                 : item?.leadName}
                             </option>

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Lead } = require('../../model/schema/lead')
-const { Contact } = require('../../model/schema/contact')
+const { Client } = require('../../model/schema/client')
 const email = require('../../model/schema/email');
 const User = require('../../model/schema/user')
 const PhoneCall = require('../../model/schema/phoneCall');
@@ -41,7 +41,7 @@ const lineChart = async (req, res) => {
     }).exec()
     const leadData = lead.filter(item => item?.createBy !== null);
 
-    let contact = await Contact.find(query).populate({
+    let contact = await Client.find(query).populate({
         path: 'createBy',
         match: { deleted: false }
     }).exec()
@@ -133,7 +133,7 @@ const lineChart = async (req, res) => {
 
     let result = [
         { name: "Leads", length: leadData?.length, color: "red" },
-        { name: "Contacts", length: contactData?.length, color: "blue" },
+        { name: "Clients", length: contactData?.length, color: "blue" },
         { name: "Properties", length: propertyData?.length, color: "green" },
         { name: "Opportunities", length: OpprtunitiesData?.length, color: "linkedin" },
         { name: "Account", length: AccountData?.length, color: "teal" },
@@ -154,8 +154,8 @@ const lineChart = async (req, res) => {
                 const data = result.filter((val) => val.name !== "Leads")
                 result = data
             }
-            if (item.title === "Contacts" && item.view === false) {
-                const data = result.filter((val) => val.name !== "Contacts")
+            if (item.title === "Clients" && item.view === false) {
+                const data = result.filter((val) => val.name !== "Clients")
                 result = data
             }
             if (item.title === "Properties" && item.view === false) {
@@ -493,7 +493,7 @@ const data = async (req, res) => {
         // ]);
         let Email = await email.aggregate([
             { $match: matchFilter },
-            { $lookup: { from: 'Contacts', localField: 'createBy', foreignField: '_id', as: 'contact' } },
+            { $lookup: { from: 'Clients', localField: 'createBy', foreignField: '_id', as: 'contact' } },
             { $unwind: { path: '$contact', preserveNullAndEmptyArrays: true } },
             { $lookup: { from: 'Leads', localField: 'createByLead', foreignField: '_id', as: 'lead' } },
             { $unwind: { path: '$lead', preserveNullAndEmptyArrays: true } },
@@ -591,7 +591,7 @@ const data = async (req, res) => {
 
         let Call = await PhoneCall.aggregate([
             { $match: matchFilter },
-            { $lookup: { from: 'Contacts', localField: 'createBy', foreignField: '_id', as: 'contact' } },
+            { $lookup: { from: 'Clients', localField: 'createBy', foreignField: '_id', as: 'contact' } },
             { $unwind: { path: '$contact', preserveNullAndEmptyArrays: true } },
             { $lookup: { from: 'Leads', localField: 'createByLead', foreignField: '_id', as: 'lead' } },
             { $unwind: { path: '$lead', preserveNullAndEmptyArrays: true } },
@@ -660,7 +660,7 @@ const data = async (req, res) => {
             { $match: matchFilter },
             {
                 $lookup: {
-                    from: 'Contact',
+                    from: 'Clients',
                     localField: 'createFor',
                     foreignField: '_id',
                     as: 'contact'

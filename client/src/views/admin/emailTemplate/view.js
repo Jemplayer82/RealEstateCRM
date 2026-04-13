@@ -45,7 +45,7 @@ const View = () => {
   const { id } = useParams();
   const [permission, contactAccess, leadAccess] = HasAccess([
     "Email Template",
-    "Contacts",
+    "Clients",
     "Leads",
   ]);
   const emailEditorRef = useRef(null);

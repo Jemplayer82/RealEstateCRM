@@ -20,7 +20,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { CUIAutoComplete } from "chakra-ui-autocomplete";
-import MultiContactModel from "components/commonTableModel/MultiContactModel";
+import MultiClientModel from "components/commonTableModel/MultiClientModel";
 import MultiLeadModel from "components/commonTableModel/MultiLeadModel";
 import Spinner from "components/spinner/Spinner";
 import dayjs from "dayjs";
@@ -48,7 +48,7 @@ const AddMeeting = (props) => {
   );
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const contactList = useSelector((state) => state?.contactData?.data);
+  const contactList = useSelector((state) => state?.clientData?.data);
 
   const initialValues = {
     agenda: "",
@@ -59,7 +59,7 @@ const AddMeeting = (props) => {
     location: "",
     related:
       props?.leadContect === "contactView"
-        ? "Contact"
+        ? "Client"
         : props?.leadContect === "leadView"
           ? "Lead"
           : "None",
@@ -113,18 +113,18 @@ const AddMeeting = (props) => {
 
   const fetchAllData = async () => {
     if (view === true) {
-      if (values?.related === "Contact" && contactdata?.length <= 0) {
+      if (values?.related === "Client" && contactdata?.length <= 0) {
         setContactData(contactList);
       } else if (values?.related === "Lead" && leaddata?.length <= 0) {
         setLeadData(leadData);
       }
     } else {
       let result;
-      if (values?.related === "Contact" && contactdata?.length <= 0) {
+      if (values?.related === "Client" && contactdata?.length <= 0) {
         result = await getApi(
           user.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user?._id}`
+            ? "api/client/"
+            : `api/client/?createBy=${user?._id}`
         );
         setContactData(result?.data);
       } else if (values?.related === "Lead" && leaddata?.length <= 0) {
@@ -148,14 +148,14 @@ const AddMeeting = (props) => {
 
   useEffect(() => {
     const conditionData =
-      values?.related === "Contact" ? contactdata : leadData;
+      values?.related === "Client" ? contactdata : leadData;
     setSetCondition(conditionData);
     const mappedCountries = Array?.isArray(conditionData)
       ? conditionData?.map((item) => ({
           ...item,
           value: item?._id,
           label:
-            values?.related === "Contact" ? item?.fullName : item?.leadName,
+            values?.related === "Client" ? item?.fullName : item?.leadName,
         }))
       : [];
     setCountriesWithEmailAsLabel(mappedCountries);
@@ -169,7 +169,7 @@ const AddMeeting = (props) => {
         <ModalCloseButton />
         <ModalBody overflowY={"auto"} height={"400px"}>
           {/* Contact Model  */}
-          <MultiContactModel
+          <MultiClientModel
             data={contactdata}
             isOpen={contactModelOpen}
             onClose={setContactModel}
@@ -229,7 +229,7 @@ const AddMeeting = (props) => {
               >
                 <Stack direction="row">
                   {props?.leadContect === "contactView" && (
-                    <Radio value="Contact">Contact</Radio>
+                    <Radio value="Client">Client</Radio>
                   )}
                   {props?.leadContect === "leadView" && (
                     <Radio value="Lead">Lead</Radio>
@@ -237,7 +237,7 @@ const AddMeeting = (props) => {
                   {!props?.leadContect && (
                     <>
                       {" "}
-                      <Radio value="Contact">Contact</Radio>
+                      <Radio value="Client">Client</Radio>
                       <Radio value="Lead">Lead</Radio>
                     </>
                   )}
@@ -248,7 +248,7 @@ const AddMeeting = (props) => {
                 {errors?.related && touched?.related && errors?.related}
               </Text>
             </GridItem>
-            {(values?.related === "Contact"
+            {(values?.related === "Client"
               ? (contactdata?.length ?? 0) > 0
               : (leaddata?.length ?? 0) > 0) &&
               values?.related && (
@@ -256,14 +256,14 @@ const AddMeeting = (props) => {
                   <Flex alignItems={"end"} justifyContent={"space-between"}>
                     <Text w={"100%"}>
                       <CUIAutoComplete
-                        label={`Choose Preferred Attendes ${values?.related === "Contact" ? "Contact" : values?.related === "Lead" && "Lead"}`}
+                        label={`Choose Preferred Attendes ${values?.related === "Client" ? "Client" : values?.related === "Lead" && "Lead"}`}
                         placeholder="Type a Name"
                         name="attendes"
                         items={countriesWithEmailAsLabel}
                         className="custom-autoComplete"
                         selectedItems={countriesWithEmailAsLabel?.filter(
                           (item) =>
-                            values?.related === "Contact"
+                            values?.related === "Client"
                               ? values?.attendes?.includes(item?._id)
                               : values?.related === "Lead" &&
                                 values?.attendesLead?.includes(item?._id)
@@ -272,7 +272,7 @@ const AddMeeting = (props) => {
                           const selectedLabels = extractLabels(
                             changes?.selectedItems
                           );
-                          values?.related === "Contact"
+                          values?.related === "Client"
                             ? setFieldValue("attendes", selectedLabels)
                             : values?.related === "Lead" &&
                               setFieldValue("attendesLead", selectedLabels);
@@ -282,7 +282,7 @@ const AddMeeting = (props) => {
                     <IconButton
                       mb={6}
                       onClick={() =>
-                        values?.related === "Contact"
+                        values?.related === "Client"
                           ? setContactModel(true)
                           : values?.related === "Lead" && setLeadModel(true)
                       }

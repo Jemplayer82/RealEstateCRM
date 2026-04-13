@@ -100,7 +100,7 @@ const FolderTreeView = ({
                       pr={2}
                       w={"180px"}
                       onClick={() =>
-                        navigate(`/contactView/${data?.linkContact}`)
+                        navigate(`/clientView/${data?.linkContact}`)
                       }
                       icon={<IoIosContact fontSize={15} />}
                     >

@@ -43,7 +43,7 @@ export default function UserReports() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const modules = useSelector((state) => state?.modules?.data)
-  const [contactsView, taskView, leadView, proprtyView] = HasAccess(["Contacts", "Tasks", "Leads", "Properties"]);
+  const [contactsView, taskView, leadView, proprtyView] = HasAccess(["Clients", "Tasks", "Leads", "Properties"]);
 
   const fetchData = async () => {
     let responseData = await getApi(user?.role === 'superAdmin' ? `api/status/` : `api/status/?createBy=${user?._id}`);
@@ -79,7 +79,7 @@ export default function UserReports() {
   }
 
   const leadModule = modules?.find(({ moduleName }) => moduleName === "Leads")
-  const contactModule = modules?.find(({ moduleName }) => moduleName === "Contacts")
+  const contactModule = modules?.find(({ moduleName }) => moduleName === "Clients")
   const propertiesModule = modules?.find(({ moduleName }) => moduleName === "Properties")
   const tasksModule = modules?.find(({ moduleName }) => moduleName === "Tasks")
   const reportModule = modules?.find(({ moduleName }) => moduleName === "Reporting and Analytics")
@@ -151,7 +151,7 @@ export default function UserReports() {
           />}
         {(contactsView?.create || contactsView?.update || contactsView?.delete || contactsView?.view) && (contactModule?.isActive) &&
           < MiniStatistics
-            onClick={() => navigate("/contacts")}
+            onClick={() => navigate("/clients")}
             startContent={
               <IconBox
                 w="56px"
@@ -162,8 +162,8 @@ export default function UserReports() {
                 }
               />
             }
-            name="Contacts"
-            value={findModuleData("Contacts")}
+            name="Clients"
+            value={findModuleData("Clients")}
           />}
         {(leadView?.create || leadView?.update || leadView?.delete || leadView?.view) && (leadModule?.isActive) &&
           <MiniStatistics

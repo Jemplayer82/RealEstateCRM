@@ -21,7 +21,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import Spinner from "components/spinner/Spinner";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import UserModel from "components/commonTableModel/UserModel";
 import { useFormik } from "formik";
@@ -66,7 +66,7 @@ const AddEmailHistory = (props) => {
     startDate: "",
     type: "message",
     html: "",
-    category: "contact",
+    category: "client",
     // assignTo: '',
     // assignToLead: '',
     createBy: user?._id,
@@ -108,11 +108,11 @@ const AddEmailHistory = (props) => {
     values.start = props?.date;
     try {
       let result;
-      if (values?.category === "Contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "Client" && assignToContactData?.length <= 0) {
         result = await getApi(
           user?.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user?._id}`
+            ? "api/client/"
+            : `api/client/?createBy=${user?._id}`
         );
         setAssignToContactData(result?.data);
       } else if (values?.category === "Lead" && assignToLeadData <= 0) {
@@ -214,7 +214,7 @@ const AddEmailHistory = (props) => {
         <ModalCloseButton />
         <ModalBody overflowY={"auto"} height={"400px"}>
           {/* Contact Model  */}
-          <ContactModel
+          <ClientModel
             isOpen={contactModelOpen}
             data={assignToContactData}
             onClose={setContactModel}
@@ -271,13 +271,13 @@ const AddEmailHistory = (props) => {
                 value={values.category}
               >
                 <Stack direction="row">
-                  <Radio value="Contact">Contact</Radio>
+                  <Radio value="Client">Client</Radio>
                   <Radio value="Lead">Lead</Radio>
                 </Stack>
               </RadioGroup>
             </GridItem>
             <GridItem colSpan={{ base: 12 }}>
-              {values.category === "Contact" ? (
+              {values.category === "Client" ? (
                 <>
                   <GridItem colSpan={{ base: 12, md: 6 }}>
                     <FormLabel
@@ -310,7 +310,7 @@ const AddEmailHistory = (props) => {
                         {assignToContactData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.fullName}`
                                 : item?.leadName}
                             </option>
@@ -359,7 +359,7 @@ const AddEmailHistory = (props) => {
                         {assignToLeadData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.firstName} ${item?.lastName}`
                                 : item?.leadName}
                             </option>

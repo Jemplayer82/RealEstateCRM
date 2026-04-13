@@ -51,7 +51,7 @@ const View = (props) => {
 
   const [permission, contactAccess, leadAccess] = HasAccess([
     "Account",
-    "Contacts",
+    "Clients",
     "Leads",
   ]);
 
@@ -1499,8 +1499,8 @@ const View = (props) => {
                             </GridItem>
                             <GridItem colSpan={{ base: 2, md: 1 }} >
                                 <Text fontSize="sm" fontWeight="bold" color={'blackAlpha.900'}> Assign To  </Text>
-                                <Link to={data?.assignTo ? contactAccess?.view && `/contactView/${data?.assignTo}` : leadAccess?.view && `/leadView/${data?.assignToLead}`}>
-                                    <Text color={(data?.category === 'contact' && (contactAccess?.view || user?.role === 'superAdmin')) ? 'brand.600' : (leadAccess?.view || user?.role === 'superAdmin' && data?.category === 'lead') ? 'brand.600' : 'blackAlpha.900'} sx={{ '&:hover': { color: 'blue.500', textDecoration: 'underline' } }}>{data?.assignToName ? data?.assignToName : ' - '}</Text>
+                                <Link to={data?.assignTo ? contactAccess?.view && `/clientView/${data?.assignTo}` : leadAccess?.view && `/leadView/${data?.assignToLead}`}>
+                                    <Text color={(data?.category === 'client' && (contactAccess?.view || user?.role === 'superAdmin')) ? 'brand.600' : (leadAccess?.view || user?.role === 'superAdmin' && data?.category === 'lead') ? 'brand.600' : 'blackAlpha.900'} sx={{ '&:hover': { color: 'blue.500', textDecoration: 'underline' } }}>{data?.assignToName ? data?.assignToName : ' - '}</Text>
                                 </Link>
                             </GridItem>
                             <GridItem colSpan={{ base: 2, md: 1 }} >

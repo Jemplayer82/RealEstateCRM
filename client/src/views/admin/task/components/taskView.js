@@ -49,7 +49,7 @@ const TaskView = (props) => {
 
   const [permission, contactAccess, leadAccess] = HasAccess([
     "Tasks",
-    "Contacts",
+    "Clients",
     "Leads",
   ]);
 
@@ -416,13 +416,13 @@ const TaskView = (props) => {
                 <Link
                   to={
                     data?.assignTo
-                      ? contactAccess?.view && `/contactView/${data?.assignTo}`
+                      ? contactAccess?.view && `/clientView/${data?.assignTo}`
                       : leadAccess?.view && `/leadView/${data?.assignToLead}`
                   }
                 >
                   <Text
                     color={
-                      data?.category === "contact" &&
+                      data?.category === "client" &&
                       (contactAccess?.view || user?.role === "superAdmin")
                         ? "brand.600"
                         : leadAccess?.view ||

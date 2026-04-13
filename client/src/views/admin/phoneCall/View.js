@@ -89,7 +89,7 @@ const View = () => {
   }, []);
 
   const [contactAccess, leadAccess, PropertiesAccess] = HasAccess([
-    "Contacts",
+    "Clients",
     "Leads",
     "Properties",
   ]);
@@ -176,7 +176,7 @@ const View = () => {
                       <Link
                         to={
                           contactAccess?.view &&
-                          `/contactView/${data?.createBy}`
+                          `/clientView/${data?.createBy}`
                         }
                       >
                         <Text
@@ -234,7 +234,7 @@ const View = () => {
                     </Text>
                     <Text>
                       {data?.createBy
-                        ? "contact"
+                        ? "client"
                         : data?.createByLead && "lead"}
                     </Text>
                   </GridItem>

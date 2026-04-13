@@ -56,7 +56,7 @@ const View = (props) => {
     contactAccess,
     opportunityAccess,
     invoicesAccess,
-  ] = HasAccess(["Quotes", "Account", "Contacts", "Opportunities", "Invoices"]);
+  ] = HasAccess(["Quotes", "Account", "Clients", "Opportunities", "Invoices"]);
 
   const [data, setData] = useState();
   const [invoiceData, setInvoiceData] = useState([]);
@@ -119,7 +119,7 @@ const View = (props) => {
               onClick={() =>
                 navigate(
                   cell?.row?.original?.contact !== null &&
-                    `/contactView/${cell?.row?.original?.contact}`,
+                    `/clientView/${cell?.row?.original?.contact}`,
                 )
               }
               me="10px"
@@ -953,7 +953,7 @@ const View = (props) => {
                 </Text>
                 {data?.contact ? (
                   <Link
-                    to={contactAccess?.view && `/contactView/${data?.contact}`}
+                    to={contactAccess?.view && `/clientView/${data?.contact}`}
                   >
                     <Text
                       color={

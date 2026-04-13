@@ -1,4 +1,4 @@
-import { contactSchema } from "./contactSchema.js";
+import { clientSchema } from "./clientSchema.js";
 import { propertySchema } from "./propertySchema.js";
 import { leadSchema } from "./leadSchema.js";
 import { userSchema } from "./userSchema.js";
@@ -13,7 +13,7 @@ import { addFiledSchema } from "./addFiledSchema.js";
 
 export {
   addFiledSchema,
-  contactSchema,
+  clientSchema,
   propertySchema,
   leadSchema,
   userSchema,

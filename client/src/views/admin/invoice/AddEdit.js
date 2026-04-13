@@ -45,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOpportunityData } from "../../../redux/slices/opportunitySlice";
 import AccountModel from "components/commonTableModel/AccountModel";
 import { fetchAccountData } from "../../../redux/slices/accountSlice";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import { HasAccess } from "../../../redux/accessUtils";
 import { fetchInvoicesData } from "../../../redux/slices/invoicesSlice";
 import moment from "moment";
@@ -76,14 +76,14 @@ const AddEdit = (props) => {
   const [netAmount, setNetAmount] = useState(0);
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
-  const [accountAccess, contactAccess] = HasAccess(["Account", "Contacts"]);
+  const [accountAccess, contactAccess] = HasAccess(["Account", "Clients"]);
   const [isOpenPreview, setIsOpenPreview] = useState(false);
 
   const opportunityList = useSelector(
     (state) => state?.opportunityData?.data?.data,
   );
   const accountList = useSelector((state) => state?.accountData?.data?.data);
-  const contactList = useSelector((state) => state?.contactData?.data);
+  const contactList = useSelector((state) => state?.clientData?.data);
   const largeLogo = useSelector((state) =>
     state?.images?.images?.filter((item) => item?.isActive === true),
   );
@@ -349,7 +349,7 @@ const AddEdit = (props) => {
         />
       )}
       {contactModel && (
-        <ContactModel
+        <ClientModel
           isOpen={contactModel}
           data={contactList}
           onClose={setContactModel}

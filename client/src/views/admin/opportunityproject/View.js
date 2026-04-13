@@ -429,7 +429,7 @@ const View = (props) => {
     setEdit(false);
   };
 
-  const [contactAccess, leadAccess] = HasAccess(["Contacts", "Leads"]);
+  const [contactAccess, leadAccess] = HasAccess(["Clients", "Leads"]);
 
   return (
     <>
@@ -685,14 +685,14 @@ const View = (props) => {
                     to={
                       opportunitydata?.contact
                         ? contactAccess?.view &&
-                          `/contactView/${opportunitydata?.contact}`
+                          `/clientView/${opportunitydata?.contact}`
                         : leadAccess?.view &&
                           `/leadView/${opportunitydata?.lead}`
                     }
                   >
                     <Text
                       color={
-                        opportunitydata?.category === "contact" &&
+                        opportunitydata?.category === "client" &&
                         (contactAccess?.view || user?.role === "superAdmin")
                           ? "brand.600"
                           : leadAccess?.view ||
@@ -795,7 +795,7 @@ const View = (props) => {
         isOpen={addMeeting}
         leadContect={splitValue?.[0]}
         onClose={setMeeting}
-        from="contact"
+        from="client"
         id={params?.id}
         setAction={setAction}
         view={true}

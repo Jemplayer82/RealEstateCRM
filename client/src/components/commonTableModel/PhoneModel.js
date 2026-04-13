@@ -20,7 +20,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import UserModel from "components/commonTableModel/UserModel";
 import PropertyModel from "components/commonTableModel/PropertyModel";
@@ -60,7 +60,7 @@ const PhoneModel = (props) => {
     createByLead: "",
     property: [id],
     startDate: "",
-    category: "contact",
+    category: "client",
     // assignTo: '',
     // assignToLead: '',
     createBy: user?._id,
@@ -118,11 +118,11 @@ const PhoneModel = (props) => {
     values.start = props?.date;
     try {
       let result;
-      if (values?.category === "Contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "Client" && assignToContactData?.length <= 0) {
         result = await getApi(
           user?.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user?._id}`,
+            ? "api/client/"
+            : `api/client/?createBy=${user?._id}`,
         );
         setAssignToContactData(result?.data);
       } else if (values?.category === "Lead" && assignToLeadData?.length <= 0) {
@@ -209,8 +209,8 @@ const PhoneModel = (props) => {
         <ModalHeader>Add Call</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* Contact Model  */}
-          <ContactModel
+          {/* Client Model  */}
+          <ClientModel
             isOpen={contactModelOpen}
             data={assignToContactData}
             onClose={setContactModel}
@@ -268,7 +268,7 @@ const PhoneModel = (props) => {
                 value={values?.category}
               >
                 <Stack direction="row">
-                  <Radio value="Contact">Contact</Radio>
+                  <Radio value="Client">Client</Radio>
                   <Radio value="Lead">Lead</Radio>
                 </Stack>
               </RadioGroup>
@@ -278,7 +278,7 @@ const PhoneModel = (props) => {
               </Text>
             </GridItem>
             <GridItem colSpan={{ base: 12 }}>
-              {values?.category === "Contact" ? (
+              {values?.category === "Client" ? (
                 <>
                   <GridItem colSpan={{ base: 12, md: 6 }}>
                     <FormLabel
@@ -311,7 +311,7 @@ const PhoneModel = (props) => {
                         {assignToContactData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.fullName}`
                                 : item?.leadName}
                             </option>
@@ -366,7 +366,7 @@ const PhoneModel = (props) => {
                         {assignToLeadData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.firstName} ${item?.lastName}`
                                 : item?.leadName}
                             </option>

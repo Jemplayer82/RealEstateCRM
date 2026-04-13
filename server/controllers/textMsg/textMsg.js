@@ -46,7 +46,7 @@ const index = async (req, res) => {
             { $match: query },
             {
                 $lookup: {
-                    from: 'Contact',
+                    from: 'Clients',
                     localField: 'createFor',
                     foreignField: '_id',
                     as: 'contact'
@@ -91,7 +91,7 @@ const view = async (req, res) => {
             { $match: { _id: result._id } },
             {
                 $lookup: {
-                    from: 'Contact',
+                    from: 'Clients',
                     localField: 'createFor',
                     foreignField: '_id',
                     as: 'contact'

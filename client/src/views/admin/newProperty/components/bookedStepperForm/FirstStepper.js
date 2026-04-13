@@ -11,7 +11,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import ContactModel from "components/commonTableModel/ContactModel.js";
+import ClientModel from "components/commonTableModel/ClientModel.js";
 import LeadModel from "components/commonTableModel/LeadModel";
 import { useEffect, useState } from "react";
 import { LiaMousePointerSolid } from "react-icons/lia";
@@ -47,11 +47,11 @@ export const FirstStepper = (props) => {
   const getAllAPi = async () => {
     try {
       let result;
-      if (values?.category === "contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "client" && assignToContactData?.length <= 0) {
         result = await getApi(
           user?.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user?._id}`
+            ? "api/client/"
+            : `api/client/?createBy=${user?._id}`
         );
         setAssignToContactData(result?.data);
       } else if (values?.category === "lead" && assignToLeadData <= 0) {
@@ -86,11 +86,11 @@ export const FirstStepper = (props) => {
 
   return (
     <div className="contact-info-form">
-      <ContactModel
+      <ClientModel
         isOpen={contactModel}
         data={assignToContactData}
         onClose={setContactModel}
-        fieldName="contact"
+        fieldName="client"
         setFieldValue={setFieldValue}
       />
       <LeadModel
@@ -115,26 +115,26 @@ export const FirstStepper = (props) => {
           <RadioGroup
             onChange={(e) => {
               setFieldValue("category", e);
-              setFieldValue("contact", "");
+              setFieldValue("client", "");
               // setFieldValue("lead", "");
             }}
             onBlur={handleBlur}
-            value={values.category || "contact"}
-            defaultValue="contact"
+            value={values.category || "client"}
+            defaultValue="client"
           >
             <Stack direction="row" defaultValue={"lead"}>
-              <Radio value="contact">Contact</Radio>
+              <Radio value="client">Client</Radio>
               {/* <Radio value="lead">Lead</Radio> */}
             </Stack>
           </RadioGroup>
         </GridItem>
-        {/* {values?.category === "contact" ? ( */}
+        {/* {values?.category === "client" ? ( */}
         <GridItem colSpan={{ base: 12 }}>
           <Flex justifyContent={"space-between"}>
             <Select
               value={values?.contact}
               onBlur={handleBlur}
-              name="contact"
+              name="client"
               onChange={handleChange}
               mb={errors?.contact && touched?.contact ? undefined : "10px"}
               fontWeight="500"
@@ -178,7 +178,7 @@ export const FirstStepper = (props) => {
                 {assignToLeadData?.map((item) => {
                   return (
                     <option value={item?._id} key={item?._id}>
-                      {values?.category === "contact"
+                      {values?.category === "client"
                         ? `${item?.firstName} ${item?.lastName}`
                         : item?.leadName}
                     </option>

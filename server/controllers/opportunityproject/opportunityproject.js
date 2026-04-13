@@ -76,7 +76,7 @@ const view = async (req, res) => {
       { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
       {
         $lookup: {
-          from: "Contacts",
+          from: "Clients",
           localField: "contact",
           foreignField: "_id",
           as: "contactList",
@@ -145,7 +145,7 @@ const edit = async (req, res) => {
     category,
     property,
   };
-  if (category === "Contact") {
+  if (category === "Client") {
     oppotunityDataBody.contact = contact;
     oppotunityDataBody.lead = null;
   }

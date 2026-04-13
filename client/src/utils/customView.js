@@ -324,8 +324,8 @@ const CustomView = ({
 
   const headingLength = data?.headings?.length % 3;
   const headingLengthMd = data?.headings?.length % 2;
-  const lastLength = data?.headings.length - headingLength;
-  const lastLengthMd = data?.headings.length - headingLengthMd;
+  const lastLength = data?.headings?.length - headingLength;
+  const lastLengthMd = data?.headings?.length - headingLengthMd;
 
   const getColSpanLg = (ind, lastLength, headingLength) => {
     if (ind < lastLength) {

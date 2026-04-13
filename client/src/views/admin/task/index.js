@@ -50,7 +50,7 @@ const Task = () => {
   const [permission, leadAccess, contactAccess] = HasAccess([
     "Tasks",
     "Leads",
-    "Contacts",
+    "Clients",
   ]);
   const location = useLocation();
   const state = location?.state;

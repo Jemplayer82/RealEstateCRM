@@ -97,7 +97,7 @@ export default function CheckTable(props) {
         isOpen={deleteModel}
         onClose={setDelete}
         setSelectedValues={setSelectedValues}
-        url="api/contact/deleteMany"
+        url="api/client/deleteMany"
         data={selectedValues}
         method="many"
       />

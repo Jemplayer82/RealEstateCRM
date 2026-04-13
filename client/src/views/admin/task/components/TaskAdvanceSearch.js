@@ -221,7 +221,7 @@ const TaskAdvanceSearch = (props) => {
                   fontWeight="500"
                   placeholder={"Select Category"}
                 >
-                  <option value="contact">Contact</option>
+                  <option value="client">Client</option>
                   <option value="lead">Lead</option>
                   <option value="none">None</option>
                 </Select>

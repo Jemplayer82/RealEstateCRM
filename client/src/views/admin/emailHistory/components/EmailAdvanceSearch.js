@@ -167,7 +167,7 @@ const EmailAdvanceSearch = (props) => {
                   fontWeight="500"
                   placeholder={"Select Related To"}
                 >
-                  <option value="contact">Contact</option>
+                  <option value="client">Client</option>
                   <option value="lead">Lead</option>
                 </Select>
                 <Text mb="10px" color={"red"}>

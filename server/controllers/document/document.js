@@ -83,7 +83,7 @@ const file = async (req, res) => {
         res.json({ message: 'Folder and files added successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ err, error: req });
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -92,7 +92,7 @@ const addDocumentContact = async (req, res) => {
         const { filename, folderName, linkContact, createBy } = req.body;
 
         if (!linkContact) {
-            return res.status(404).json({ message: 'Select valid contact ' });
+            return res.status(404).json({ message: 'Select valid client ' });
         }
 
         const url = req.protocol + '://' + req.get('host');
@@ -126,7 +126,7 @@ const addDocumentContact = async (req, res) => {
         res.json({ message: 'Folder and files added successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ err, error: req });
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -135,7 +135,7 @@ const addDocumentLead = async (req, res) => {
         const { filename, folderName, linkLead, createBy } = req.body;
 
         if (!linkLead) {
-            return res.status(404).json({ message: 'Select valid contact ' });
+            return res.status(404).json({ message: 'Select valid client ' });
         }
 
         const url = req.protocol + '://' + req.get('host');
@@ -169,7 +169,7 @@ const addDocumentLead = async (req, res) => {
         res.json({ message: 'Folder and files added successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ err, error: req });
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -233,7 +233,7 @@ const LinkDocument = async (req, res) => {
         let { linkContact, linkLead } = req.body
 
         if (!linkContact && !linkLead) {
-            return res.status(404).json({ message: 'Select valid contact or lead ' });
+            return res.status(404).json({ message: 'Select valid client or lead ' });
         }
 
         // Check if the folder exists in the database

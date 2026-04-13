@@ -52,7 +52,7 @@ const Index = (props) => {
   const [permission, accountAccess, contactAccess] = HasAccess([
     "Quotes",
     "Account",
-    "Contacts",
+    "Clients",
   ]);
 
   const actionHeader = {
@@ -163,7 +163,7 @@ const Index = (props) => {
               onClick={() =>
                 navigate(
                   cell?.row?.original?.contact !== null &&
-                    `/contactView/${cell?.row?.original?.contact}`,
+                    `/clientView/${cell?.row?.original?.contact}`,
                 )
               }
               me="10px"

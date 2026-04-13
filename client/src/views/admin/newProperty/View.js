@@ -63,7 +63,7 @@ import png from "../../../assets/img/fileImage/png.png";
 import xls from "../../../assets/img/fileImage/xls.png";
 import xlsx from "../../../assets/img/fileImage/xlsx.png";
 import { HasAccess } from "../../../redux/accessUtils";
-import { fetchContactCustomFiled } from "../../../redux/slices/contactCustomFiledSlice";
+import { fetchClientCustomFiled } from "../../../redux/slices/clientCustomFiledSlice";
 import { fetchPropertyCustomFiled } from "../../../redux/slices/propertyCustomFiledSlice";
 import Add from "./Add";
 import AddEditUnits from "./components/AddEditUnits";
@@ -81,7 +81,7 @@ const View = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState();
   const [unitTypeList, setUnitTypeList] = useState([]);
-  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
   const [edit, setEdit] = useState(false);
   const [deleteModel, setDelete] = useState(false);
   const [action, setAction] = useState(false);
@@ -222,7 +222,7 @@ const View = () => {
 
   const fetchCustomDataFields = async () => {
     setIsLoding(true);
-    const result = await dispatch(fetchContactCustomFiled());
+    const result = await dispatch(fetchClientCustomFiled());
     setContactData(result?.payload?.data);
 
     const tempTableColumns = [
@@ -376,7 +376,7 @@ const View = () => {
     let response = await getApi("api/property/view/", param?.id);
     setData(response?.data?.property);
     handleSetUnitTypeList(response?.data?.property?.unitType);
-    setFilteredContacts(response?.data?.filteredContacts);
+    setFilteredClients(response?.data?.filteredClients);
     setIsLoding(false);
   };
 
@@ -749,7 +749,7 @@ const View = () => {
                   moduleId={propertyData?.[0]?._id}
                   id="reports"
                 />
-                {filteredContacts?.length > 0 && (
+                {filteredClients?.length > 0 && (
                   <GridItem colSpan={{ base: 12 }} mt={4}>
                     <Grid templateColumns={{ base: "1fr" }}>
                       <GridItem colSpan={2}>
@@ -762,8 +762,8 @@ const View = () => {
                               columnData={columns ?? []}
                               // dataColumn={columns ?? []}
                               title={"Interested Contact"}
-                              allData={filteredContacts ?? []}
-                              tableData={filteredContacts}
+                              allData={filteredClients ?? []}
+                              tableData={filteredClients}
                               // selectedColumns={selectedColumns}
                               // setSelectedColumns={setSelectedColumns}
                               size={"md"}

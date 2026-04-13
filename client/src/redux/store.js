@@ -9,8 +9,8 @@ import advanceSearchSlice from "./slices/advanceSearchSlice";
 import leadSlice from "./slices/leadSlice";
 import propertyCustomFiledSlice from "./slices/propertyCustomFiledSlice";
 import propertySlice from "./slices/propertySlice";
-import contactSlice from "./slices/contactSlice";
-import contactCustomFiledSlice from "./slices/contactCustomFiledSlice";
+import clientSlice from "./slices/clientSlice";
+import clientCustomFiledSlice from "./slices/clientCustomFiledSlice";
 import leadCustomFiledSlice from "./slices/leadCustomFiledSlice";
 import taskSlice from "./slices/taskSlice";
 import meetingSlice from "./slices/meetingSlice";
@@ -46,8 +46,8 @@ const leadPersistConfig = {
   key: "lead",
   storage,
 };
-const contactPersistConfig = {
-  key: "contact",
+const clientPersistConfig = {
+  key: "client",
   storage,
 };
 
@@ -60,9 +60,9 @@ export const store = configureStore({
     route: persistReducer(routePersistConfig, routeReducer),
     advanceSearchData: advanceSearchSlice,
     leadData: persistReducer(leadPersistConfig, leadSlice),
-    contactData: persistReducer(contactPersistConfig, contactSlice),
+    clientData: persistReducer(clientPersistConfig, clientSlice),
     propertyCustomFiled: propertyCustomFiledSlice,
-    contactCustomFiled: contactCustomFiledSlice,
+    clientCustomFiled: clientCustomFiledSlice,
     leadCustomFiled: leadCustomFiledSlice,
     propertyData: propertySlice,
     taskData: taskSlice,

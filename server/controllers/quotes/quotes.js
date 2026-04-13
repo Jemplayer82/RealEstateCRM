@@ -28,7 +28,7 @@ async function getNextAutoIncrementInvoiceValue() {
 //       { $match: query },
 //       {
 //         $lookup: {
-//           from: "Contacts",
+//           from: "Clients",
 //           localField: "contact",
 //           foreignField: "_id",
 //           as: "contactData",
@@ -200,7 +200,7 @@ const view = async (req, res) => {
       },
       {
         $lookup: {
-          from: "Contacts",
+          from: "Clients",
           localField: "contact",
           foreignField: "_id",
           as: "contactData",
@@ -298,7 +298,7 @@ const view = async (req, res) => {
       { $match: { quotesId: response._id, deleted: false } },
       {
         $lookup: {
-          from: "Contacts",
+          from: "Clients",
           localField: "contact",
           foreignField: "_id",
           as: "contactData",

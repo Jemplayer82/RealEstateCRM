@@ -87,7 +87,7 @@ const View = () => {
 
   const [permission, contactAccess, leadAccess] = HasAccess([
     "Meetings",
-    "Contacts",
+    "Clients",
     "Leads",
   ]);
 
@@ -233,11 +233,11 @@ const View = () => {
                       {" "}
                       Attendes{" "}
                     </Text>
-                    {data?.related === "Contact" && contactAccess?.view
+                    {data?.related === "Client" && contactAccess?.view
                       ? data?.attendes &&
                         data?.attendes?.map((item) => {
                           return (
-                            <Link to={`/contactView/${item?._id}`}>
+                            <Link to={`/clientView/${item?._id}`}>
                               <Text
                                 color="brand.600"
                                 sx={{
@@ -271,7 +271,7 @@ const View = () => {
                               </Link>
                             );
                           })
-                        : data?.related === "contact"
+                        : data?.related === "client"
                           ? data?.attendes &&
                             data?.attendes?.map((item) => {
                               return (

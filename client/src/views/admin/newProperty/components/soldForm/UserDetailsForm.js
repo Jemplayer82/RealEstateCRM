@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import { useEffect, useState } from "react";
 import { LiaMousePointerSolid } from "react-icons/lia";
@@ -28,16 +28,16 @@ const UserDetailsForm = (props) => {
   const [contactList, setContactList] = useState([]);
   const [leadList, setLeadList] = useState([]);
 
-  const [leadAccess, contactAccess] = HasAccess(["Leads", "Contacts"]);
+  const [leadAccess, contactAccess] = HasAccess(["Leads", "Clients"]);
 
   const getLeadContactlist = async () => {
     try {
       let result;
-      if (values?.category === "Contact" && contactList?.length <= 0) {
+      if (values?.category === "Client" && contactList?.length <= 0) {
         result = await getApi(
           user.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user._id}`
+            ? "api/client/"
+            : `api/client/?createBy=${user._id}`
         );
         setContactList(result?.data);
       } else if (values?.category === "Lead" && leadList?.length <= 0) {
@@ -60,7 +60,7 @@ const UserDetailsForm = (props) => {
   return (
     <Grid templateColumns="repeat(12, 1fr)" gap={3}>
       {/* Contact Model  */}
-      <ContactModel
+      <ClientModel
         isOpen={contactModelOpen}
         data={contactList}
         onClose={setContactModelOpen}
@@ -98,7 +98,7 @@ const UserDetailsForm = (props) => {
         >
           <Stack direction="row">
             {(user?.role === "superAdmin" || contactAccess?.create) && (
-              <Radio value="Contact">Contact</Radio>
+              <Radio value="Client">Client</Radio>
             )}
             {(user?.role === "superAdmin" || leadAccess?.create) && (
               <Radio value="Lead">Lead</Radio>
@@ -109,7 +109,7 @@ const UserDetailsForm = (props) => {
           {errors?.category && touched?.category && errors?.category}
         </Text>
       </GridItem>
-      {values?.category === "Contact" ? (
+      {values?.category === "Client" ? (
         <>
           <GridItem colSpan={{ base: 12 }}>
             <FormLabel

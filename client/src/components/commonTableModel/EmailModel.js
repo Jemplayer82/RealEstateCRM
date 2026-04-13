@@ -32,7 +32,7 @@ import { postApi, getApi } from "services/api";
 import { fetchEmailTempData } from "../../redux/slices/emailTempSlice";
 import UserModel from "components/commonTableModel/UserModel";
 import { CUIAutoComplete } from "chakra-ui-autocomplete";
-import ContactModel from "./ContactModel";
+import ClientModel from "./ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import MultiPropertyModel from "components/commonTableModel/MultiPropertyModel";
 import * as yup from "yup";
@@ -155,11 +155,11 @@ const EmailModel = (props) => {
     values.start = props?.date;
     try {
       let result;
-      if (values?.category === "Contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "Client" && assignToContactData?.length <= 0) {
         result = await getApi(
           user?.role === "superAdmin"
-            ? "api/contact/"
-            : `api/contact/?createBy=${user?._id}`,
+            ? "api/client/"
+            : `api/client/?createBy=${user?._id}`,
         );
         setAssignToContactData(result?.data);
       } else if (values?.category === "Lead" && assignToLeadData <= 0) {
@@ -224,8 +224,8 @@ const EmailModel = (props) => {
         <ModalHeader>Add Email</ModalHeader>
         <ModalCloseButton />
         <ModalBody overflowY={"auto"} height={"400px"}>
-          {/* Contact Model  */}
-          <ContactModel
+          {/* Client Model  */}
+          <ClientModel
             isOpen={contactModelOpen}
             data={assignToContactData}
             onClose={setContactModel}
@@ -283,13 +283,13 @@ const EmailModel = (props) => {
                 value={values.category}
               >
                 <Stack direction="row">
-                  <Radio value="Contact">Contact</Radio>
+                  <Radio value="Client">Client</Radio>
                   <Radio value="Lead">Lead</Radio>
                 </Stack>
               </RadioGroup>
             </GridItem>
             <GridItem colSpan={{ base: 12 }}>
-              {values.category === "Contact" ? (
+              {values.category === "Client" ? (
                 <>
                   <GridItem colSpan={{ base: 12, md: 6 }}>
                     <FormLabel
@@ -322,7 +322,7 @@ const EmailModel = (props) => {
                         {assignToContactData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values.category === "Contact"
+                              {values.category === "Client"
                                 ? `${item?.fullName}`
                                 : item?.leadName}
                             </option>
@@ -371,7 +371,7 @@ const EmailModel = (props) => {
                         {assignToLeadData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values.category === "Contact"
+                              {values.category === "Client"
                                 ? `${item?.firstName} ${item?.lastName}`
                                 : item?.leadName}
                             </option>

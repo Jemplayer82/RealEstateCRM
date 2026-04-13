@@ -58,7 +58,7 @@ import CommonDeleteModel from "components/commonDeleteModel";
 import { deleteApi } from "services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPropertyCustomFiled } from "../../../redux/slices/propertyCustomFiledSlice";
-import { fetchContactCustomFiled } from "../../../redux/slices/contactCustomFiledSlice";
+import { fetchClientCustomFiled } from "../../../redux/slices/clientCustomFiledSlice";
 import { fetchPropertyData } from "../../../redux/slices/propertySlice";
 import { FaFilePdf } from "react-icons/fa";
 import html2pdf from "html2pdf.js";
@@ -75,7 +75,7 @@ const View = () => {
   const textColor = useColorModeValue("gray.500", "white");
 
   const [data, setData] = useState();
-  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [edit, setEdit] = useState(false);
   const [deleteModel, setDelete] = useState(false);
@@ -156,14 +156,14 @@ const View = () => {
 
   const fetchCustomDataFields = async () => {
     setIsLoding(true);
-    const result = await dispatch(fetchContactCustomFiled());
+    const result = await dispatch(fetchClientCustomFiled());
     setContactData(result?.payload?.data);
 
     const tempTableColumns = [
       { Header: "#", accessor: "_id", isSortable: false, width: 10 },
-      ...result?.payload?.data?.[0]?.fields
+      ...(result?.payload?.data?.[0]?.fields
         ?.filter((field) => field?.isTableField === true)
-        ?.map((field) => ({ Header: field?.label, accessor: field?.name })),
+        ?.map((field) => ({ Header: field?.label, accessor: field?.name })) || []),
     ];
     setColumns(tempTableColumns);
     setIsLoding(false);
@@ -204,7 +204,7 @@ const View = () => {
     setData(response?.data?.property);
     setPhoneCall(response?.data?.phoneCall);
     setEmailData(response?.data?.Emails);
-    setFilteredContacts(response?.data?.filteredContacts);
+    setFilteredClients(response?.data?.filteredClients);
     setIsLoding(false);
     setSelectedTab(i);
   };
@@ -255,7 +255,7 @@ const View = () => {
 
   const [permission, emailAccess, callAccess] = HasAccess([
     "Properties",
-    "Contacts",
+    "Clients",
     "Emails",
     "Calls",
   ]);
@@ -431,7 +431,7 @@ const View = () => {
                   moduleId={propertyData?.[0]?._id}
                   id="reports"
                 />
-                {filteredContacts?.length > 0 && (
+                {filteredClients?.length > 0 && (
                   <GridItem colSpan={{ base: 12 }} mt={4}>
                     <Grid templateColumns={{ base: "1fr" }}>
                       <GridItem colSpan={2}>
@@ -444,8 +444,8 @@ const View = () => {
                               columnData={columns ?? []}
                               // dataColumn={columns ?? []}
                               title={"Interested Contact"}
-                              allData={filteredContacts ?? []}
-                              tableData={filteredContacts}
+                              allData={filteredClients ?? []}
+                              tableData={filteredClients}
                               // selectedColumns={selectedColumns}
                               // setSelectedColumns={setSelectedColumns}
                               size={"md"}

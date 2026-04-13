@@ -4,6 +4,7 @@ const route = require('./controllers/route');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 
 const port = 5001
@@ -47,6 +48,9 @@ app.use('/api/user/register', authLimiter);
 // Middleware
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+
+// Sanitize user input — strips MongoDB operators ($gt, $regex, etc.) from req.body/query/params
+app.use(mongoSanitize());
 
 // Set up CORS — restricted to known origin
 app.use(cors({

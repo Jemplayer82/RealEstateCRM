@@ -35,10 +35,10 @@ import { TbFileInvoice } from "react-icons/tb";
 const MainDashboard = React.lazy(() => import("views/admin/default"));
 
 // My component
-const Contact = React.lazy(() => import("views/admin/contact"));
-const ContactView = React.lazy(() => import("views/admin/contact/View"));
-const ContactImport = React.lazy(
-  () => import("views/admin/contact/components/ContactImport")
+const Client = React.lazy(() => import("views/admin/client"));
+const ClientView = React.lazy(() => import("views/admin/client/View"));
+const ClientImport = React.lazy(
+  () => import("views/admin/client/components/ClientImport")
 );
 
 // const Quotes = React.lazy(() => import("views/admin/quotes"));
@@ -174,30 +174,30 @@ const routes = [
     path: "/leadImport",
     component: LeadImport,
   },
-  // --------------- contact Routes --------------------
+  // --------------- client Routes --------------------
   {
-    name: "Contacts",
+    name: "Clients",
     layout: [ROLE_PATH.superAdmin, ROLE_PATH.user],
-    path: "/contacts",
+    path: "/clients",
     icon: <Icon as={MdContacts} width="20px" height="20px" color="inherit" />,
-    component: Contact,
+    component: Client,
   },
   {
-    name: "Contacts",
+    name: "Clients",
     layout: [ROLE_PATH.superAdmin, ROLE_PATH.user],
-    under: "contacts",
-    parentName: "Contacts",
-    path: "/contactView/:id",
-    component: ContactView,
+    under: "clients",
+    parentName: "Clients",
+    path: "/clientView/:id",
+    component: ClientView,
   },
   {
-    name: "Contact Import",
+    name: "Client Import",
     layout: [ROLE_PATH.superAdmin, ROLE_PATH.user],
     both: true,
-    under: "contacts",
-    parentName: "Contacts",
-    path: "/contactImport",
-    component: ContactImport,
+    under: "clients",
+    parentName: "Clients",
+    path: "/clientImport",
+    component: ClientImport,
   },
 
   // ------------- Property Routes ------------------------

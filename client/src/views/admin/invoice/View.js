@@ -51,7 +51,7 @@ const View = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [invoiceAccess, accountAccess, contactAccess, quotesAccess] = HasAccess(
-    ["Invoices", "Account", "Contacts", "Quotes"],
+    ["Invoices", "Account", "Clients", "Quotes"],
   );
 
   const [data, setData] = useState();
@@ -108,7 +108,7 @@ const View = (props) => {
               onClick={() =>
                 navigate(
                   cell?.row?.original?.contact !== null &&
-                    `/contactView/${cell?.row?.original?.contact}`,
+                    `/clientView/${cell?.row?.original?.contact}`,
                 )
               }
               me="10px"
@@ -733,7 +733,7 @@ const View = (props) => {
                 </Text>
                 {data?.contact ? (
                   <Link
-                    to={contactAccess?.view && `/contactView/${data?.contact}`}
+                    to={contactAccess?.view && `/clientView/${data?.contact}`}
                   >
                     <Text
                       color={

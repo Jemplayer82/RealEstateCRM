@@ -189,9 +189,9 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     // Find the user by username
-    const user = await User.findOne({ username, deleted: false }).populate({
-      path: "roles",
-    });
+    const user = await User.findOne({ username, deleted: false })
+      .select('+password')
+      .populate({ path: "roles" });
     if (!user) {
       res
         .status(401)
@@ -211,10 +211,14 @@ const login = async (req, res) => {
       expiresIn: "1d",
     });
 
+    // Strip password from response
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
     res
       .status(200)
       .setHeader("Authorization", `Bearer ${token}`)
-      .json({ token: token, user });
+      .json({ token: token, user: userResponse });
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
@@ -280,7 +284,9 @@ const completeSetup = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.status(200).json({ message: 'Setup complete. Admin account created.', token, user });
+    const userResponse = user.toObject();
+    delete userResponse.password;
+    res.status(200).json({ message: 'Setup complete. Admin account created.', token, user: userResponse });
   } catch (error) {
     console.error('Setup failed:', error.message);
     res.status(500).json({ error: 'Setup failed.' });

@@ -67,7 +67,7 @@ const index = async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'Contacts', // Assuming this is the collection name for 'contacts'
+                    from: 'Clients', // Assuming this is the collection name for 'clients'
                     localField: 'createByContact',
                     foreignField: '_id',
                     as: 'createByRef'
@@ -138,7 +138,7 @@ const view = async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'Contacts', // Assuming this is the collection name for 'contacts'
+                    from: 'Clients', // Assuming this is the collection name for 'clients'
                     localField: 'createByContact',
                     foreignField: '_id',
                     as: 'createByRef'

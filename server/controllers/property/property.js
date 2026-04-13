@@ -4,7 +4,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { createUpload, ALLOWED_IMAGE_TYPES, ALLOWED_DOC_TYPES, ALLOWED_MEDIA_TYPES, MAX_IMAGE_SIZE, MAX_DOC_SIZE, MAX_VIDEO_SIZE } = require("../../middelwares/uploadConfig");
-const { Contact } = require("../../model/schema/contact");
+const { Client } = require("../../model/schema/client");
 const PhoneCall = require("../../model/schema/phoneCall");
 const { default: mongoose } = require("mongoose");
 const Email = require("../../model/schema/email");
@@ -269,10 +269,10 @@ const genrateOfferLetter = async (req, res) => {
       purchaser = lead?.leadName;
     }
     if (req?.body?.contact) {
-      const contact = await Contact?.findOne({
+      const client = await Client?.findOne({
         _id: new mongoose.Types.ObjectId(req?.body?.contact),
       }).lean();
-      purchaser = contact?.fullName;
+      purchaser = client?.fullName;
     }
 
     const unitType = property?.unitType?.find(
@@ -349,7 +349,7 @@ const genrateOfferLetter = async (req, res) => {
         _id: new mongoose.Types.ObjectId(req?.body?.lead),
       }).lean();
 
-      const contactFeild = new Contact({
+      const contactFeild = new Client({
         fullName: lead?.leadName,
         email: lead?.leadEmail,
         phoneNumber: lead?.leadPhoneNumber,
@@ -387,7 +387,7 @@ const genrateOfferLetter = async (req, res) => {
 
     if (offerLatterFeiledPayload?.category === "lead") {
       offerLatterFeiledPayload.lead = req?.body?.lead;
-    } else if (offerLatterFeiledPayload?.category === "contact") {
+    } else if (offerLatterFeiledPayload?.category === "client") {
       offerLatterFeiledPayload.contact = req?.body?.contact;
     }
 
@@ -459,7 +459,7 @@ const edit = async (req, res) => {
 const view = async (req, res) => {
   const { id } = req.params;
   let property = await Property.findOne({ _id: id });
-  let result = await Contact.find({ deleted: false });
+  let result = await Client.find({ deleted: false });
 
   let phoneCall = await PhoneCall.aggregate([
     {
@@ -469,7 +469,7 @@ const view = async (req, res) => {
     },
     {
       $lookup: {
-        from: "Contacts",
+        from: "Clients",
         localField: "createByContact",
         foreignField: "_id",
         as: "contact",
@@ -569,7 +569,7 @@ const view = async (req, res) => {
     },
     {
       $lookup: {
-        from: "Contacts", // Assuming this is the collection name for 'contacts'
+        from: "Clients", // Assuming this is the collection name for 'clients'
         localField: "createByContact",
         foreignField: "_id",
         as: "createByRef",
@@ -623,12 +623,12 @@ const view = async (req, res) => {
     },
   ]);
 
-  let filteredContacts = result?.filter((contact) =>
-    contact.interestProperty?.includes(id)
+  let filteredClients = result?.filter((client) =>
+    client.interestProperty?.includes(id)
   );
 
   if (!property) return res.status(404).json({ message: "no Data Found." });
-  res.status(200).json({ property, filteredContacts, phoneCall, Emails });
+  res.status(200).json({ property, filteredClients, phoneCall, Emails });
 };
 
 const deleteData = async (req, res) => {

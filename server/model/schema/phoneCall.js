@@ -21,7 +21,7 @@ const phoneCall = new mongoose.Schema({
   },
   createByContact: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Contact",
+    ref: "Clients",
   },
   createBy: {
     type: mongoose.Schema.Types.ObjectId,

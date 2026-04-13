@@ -99,7 +99,7 @@ const View = () => {
   }, []);
 
   const [contactAccess, leadAccess, PropertiesAccess] = HasAccess([
-    "Contacts",
+    "Clients",
     "Leads",
     "Properties",
   ]);
@@ -183,7 +183,7 @@ const View = () => {
                       Create From{" "}
                     </Text>
                     {data?.createBy ? (
-                      <Link to={`/contactView/${data?.createBy}`}>
+                      <Link to={`/clientView/${data?.createBy}`}>
                         <Text
                           color={
                             contactAccess?.view ? "brand.600" : "blackAlpha.900"

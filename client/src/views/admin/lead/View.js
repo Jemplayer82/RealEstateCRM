@@ -914,7 +914,7 @@ const View = () => {
         isOpen={addMeeting}
         leadContect={splitValue?.[0]}
         onClose={setMeeting}
-        from="contact"
+        from="client"
         id={param.id}
         setAction={setAction}
         view={true}

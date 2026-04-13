@@ -44,7 +44,7 @@ const Index = (props) => {
   const [permission, leadAccess, contactAccess] = HasAccess([
     "Calls",
     "Leads",
-    "Contacts",
+    "Clients",
   ]);
   const actionHeader = {
     Header: "Action",
@@ -79,7 +79,7 @@ const Index = (props) => {
                 onClick={() =>
                   navigate(
                     row?.original?.createByContact &&
-                      `/contactView/${row?.original.createByContact}`,
+                      `/clientView/${row?.original.createByContact}`,
                   )
                 }
                 icon={
@@ -91,7 +91,7 @@ const Index = (props) => {
                 {" "}
                 {row?.original.createByContact &&
                   contactAccess?.view &&
-                  "contact"}
+                  "client"}
               </MenuItem>
             ) : (
               ""
@@ -152,7 +152,7 @@ const Index = (props) => {
       cell: ({ row }) => (
         <Text>
           {row?.original.createByContact && contactAccess?.view ? (
-            <Link to={`/contactView/${row?.original.createByContact}`}>
+            <Link to={`/clientView/${row?.original.createByContact}`}>
               <Text
                 me="10px"
                 sx={{

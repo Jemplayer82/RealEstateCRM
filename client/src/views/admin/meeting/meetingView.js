@@ -47,7 +47,7 @@ const MeetingView = (props) => {
     fetchViewData();
   }, [action, info]);
 
-  const [contactAccess, leadAccess] = HasAccess(["Contacts", "Leads"]);
+  const [contactAccess, leadAccess] = HasAccess(["Clients", "Leads"]);
 
   const handleViewOpen = () => {
     if (info?.event) {
@@ -156,11 +156,11 @@ const MeetingView = (props) => {
                     {" "}
                     attendes{" "}
                   </Text>
-                  {data?.related === "Contact" && contactAccess?.view
+                  {data?.related === "Client" && contactAccess?.view
                     ? data?.attendes &&
                       data?.attendes?.map((item) => {
                         return (
-                          <Link to={`/contactView/${item?._id}`}>
+                          <Link to={`/clientView/${item?._id}`}>
                             <Text
                               color="brand.600"
                               sx={{
@@ -194,7 +194,7 @@ const MeetingView = (props) => {
                             </Link>
                           );
                         })
-                      : data?.related === "Contact"
+                      : data?.related === "Client"
                         ? data?.attendes &&
                           data?.attendes?.map((item) => {
                             return (

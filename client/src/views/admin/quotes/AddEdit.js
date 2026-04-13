@@ -44,7 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOpportunityData } from "../../../redux/slices/opportunitySlice";
 import AccountModel from "components/commonTableModel/AccountModel";
 import { fetchAccountData } from "../../../redux/slices/accountSlice";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import { HasAccess } from "../../../redux/accessUtils";
 
 const AddEdit = (props) => {
@@ -61,7 +61,7 @@ const AddEdit = (props) => {
   const user = JSON.parse(localStorage?.getItem("user"));
   const [accountAccess, contactAccess, opportunityAccess] = HasAccess([
     "Account",
-    "Contacts",
+    "Clients",
     "Opportunities",
   ]);
 
@@ -69,7 +69,7 @@ const AddEdit = (props) => {
     (state) => state?.opportunityData?.data?.data,
   );
   const accountList = useSelector((state) => state?.accountData?.data?.data);
-  const contactList = useSelector((state) => state?.contactData?.data);
+  const contactList = useSelector((state) => state?.clientData?.data);
 
   const initialValues = {
     title: type === "edit" ? quotesDetails?.title : "",
@@ -354,7 +354,7 @@ const AddEdit = (props) => {
         />
       )}
       {contactModel && (
-        <ContactModel
+        <ClientModel
           isOpen={contactModel}
           data={contactList}
           onClose={setContactModel}

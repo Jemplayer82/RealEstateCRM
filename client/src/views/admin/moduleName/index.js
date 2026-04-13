@@ -194,7 +194,7 @@ const Index = () => {
                       <Checkbox
                         disabled={
                           item?.moduleName === "Properties" ||
-                          item?.moduleName === "Contacts" ||
+                          item?.moduleName === "Clients" ||
                           item?.moduleName === "Leads"
                         }
                         colorScheme="brandScheme"
@@ -233,7 +233,7 @@ const Index = () => {
                         size="sm"
                         disabled={
                           item?.moduleName === "Properties" ||
-                          item?.moduleName === "Contacts" ||
+                          item?.moduleName === "Clients" ||
                           item?.moduleName === "Leads"
                         }
                         variant="outline"
@@ -247,7 +247,7 @@ const Index = () => {
                         size="sm"
                         disabled={
                           item?.moduleName === "Properties" ||
-                          item?.moduleName === "Contacts" ||
+                          item?.moduleName === "Clients" ||
                           item?.moduleName === "Leads"
                         }
                         variant="outline"

@@ -119,7 +119,7 @@ const advanceSearchSlice = createSlice({
                       action.payload.values?.senderName?.toLowerCase(),
                     ))) &&
               (!action.payload.values?.realetedTo ||
-                (action.payload.values.realetedTo === "contact"
+                (action.payload.values.realetedTo === "client"
                   ? item.createBy
                   : item.createByLead)) &&
               (!action.payload.values?.createByName ||
@@ -155,7 +155,7 @@ const advanceSearchSlice = createSlice({
                       action.payload.values?.senderName?.toLowerCase(),
                     ))) &&
               (!action.payload.values?.realetedTo ||
-                (action.payload.values.realetedTo === "contact"
+                (action.payload.values.realetedTo === "client"
                   ? item.createBy
                   : item.createByLead)) &&
               (!action.payload.values?.createByName ||

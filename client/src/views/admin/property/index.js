@@ -88,7 +88,12 @@ const Index = () => {
                   color={"green"}
                   icon={<ViewIcon mb={1} fontSize={15} />}
                   onClick={() => {
-                    navigate(`/propertyView/${row?.values?._id}`);
+                    const address = row?.original?.location || row?.values?.location || "";
+                    if (address) {
+                      window.open(`https://www.zillow.com/homes/${encodeURIComponent(address)}_rb/`, "_blank");
+                    } else {
+                      navigate(`/propertyView/${row?.values?._id}`);
+                    }
                   }}
                 >
                   View

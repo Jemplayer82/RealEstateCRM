@@ -4,7 +4,7 @@ const meetingHistory = new mongoose.Schema({
     agenda: { type: String, required: true },
     attendes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Contact',
+        ref: 'Clients',
     }],
     attendesLead: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -180,7 +180,7 @@ const EventView = (props) => {
                       <Link
                         to={
                           contactAccess?.view &&
-                          `/contactView/${data?.assignTo}`
+                          `/clientView/${data?.assignTo}`
                         }
                       >
                         <Text

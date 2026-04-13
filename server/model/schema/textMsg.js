@@ -10,7 +10,7 @@ const TextMsg = new mongoose.Schema({
     message: { type: String },
     createFor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Contact',
+        ref: 'Clients',
         required: true
     },
     timestamp: {

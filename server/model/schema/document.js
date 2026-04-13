@@ -8,7 +8,7 @@ const fileSchema = new mongoose.Schema({
     },
     linkContact: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Contact',
+        ref: 'Clients',
     },
     linkLead: {
         type: mongoose.Schema.Types.ObjectId,

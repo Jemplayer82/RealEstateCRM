@@ -18,7 +18,7 @@ const defaultRole = {
             "view": true
         },
         {
-            "title": "Contacts",
+            "title": "Clients",
             "create": true,
             "update": false,
             "delete": false,

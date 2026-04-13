@@ -24,7 +24,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getApi, postApi } from "services/api";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import LeadModel from "components/commonTableModel/LeadModel";
 import { LiaMousePointerSolid } from "react-icons/lia";
 
@@ -88,11 +88,11 @@ const Link = (props) => {
   };
 
   const fetchData = async () => {
-    if (values?.linkWith === "Contact") {
+    if (values?.linkWith === "Client") {
       let result = await getApi(
         user?.role === "superAdmin"
-          ? "api/contact/"
-          : `api/contact/?createBy=${user._id}`,
+          ? "api/client/"
+          : `api/client/?createBy=${user._id}`,
       );
       values.createBy = result?._id;
       setData((prevData) => [
@@ -150,7 +150,7 @@ const Link = (props) => {
                   value={values?.linkWith}
                 >
                   <Stack direction="row">
-                    <Radio value="Contact">Contact</Radio>
+                    <Radio value="Client">Client</Radio>
                     <Radio value="lead">Lead</Radio>
                   </Stack>
                 </RadioGroup>
@@ -160,7 +160,7 @@ const Link = (props) => {
                 </Text>
               </GridItem>
 
-              {values?.linkWith === "Contact" ? (
+              {values?.linkWith === "Client" ? (
                 <GridItem colSpan={{ base: 12 }}>
                   <FormLabel
                     display="flex"
@@ -193,7 +193,7 @@ const Link = (props) => {
                       {data?.map((item) => {
                         return (
                           <option value={item?.value} key={item?.value}>
-                            {values?.linkWith === "Contact" && `${item?.label}`}
+                            {values?.linkWith === "Client" && `${item?.label}`}
                           </option>
                         );
                       })}
@@ -299,7 +299,7 @@ const Link = (props) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <ContactModel
+      <ClientModel
         data={data}
         isOpen={contactModelOpen}
         onClose={setContactModel}

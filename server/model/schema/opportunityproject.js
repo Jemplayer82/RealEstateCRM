@@ -15,7 +15,7 @@ const OpportunityProject = new mongoose.Schema({
   ],
   contact: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Contact",
+    ref: "Clients",
   },
   lead: {
     type: mongoose.Schema.Types.ObjectId,

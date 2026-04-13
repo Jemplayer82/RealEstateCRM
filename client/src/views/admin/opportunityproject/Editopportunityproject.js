@@ -22,7 +22,7 @@ import {
 import Spinner from "components/spinner/Spinner";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import ContactModel from "components/commonTableModel/ContactModel";
+import ClientModel from "components/commonTableModel/ClientModel";
 import { toast } from "react-toastify";
 import { putApi } from "services/api";
 import { postApi } from "services/api";
@@ -92,13 +92,13 @@ const Editopportunityproject = (props) => {
     resetForm,
   } = formik;
 
-  const contactData = useSelector((state) => state?.contactData?.data);
+  const contactData = useSelector((state) => state?.clientData?.data);
   const leadData = useSelector((state) => state?.leadData?.data);
 
   const getAllApi = async () => {
     values.start = props?.date;
     if (view === true) {
-      if (values?.category === "Contact" && assignToContactData?.length <= 0) {
+      if (values?.category === "Client" && assignToContactData?.length <= 0) {
         setAssignToContactData(contactData);
       } else if (values?.category === "Lead" && assignToLeadData?.length <= 0) {
         setAssignToLeadData(leadData);
@@ -107,13 +107,13 @@ const Editopportunityproject = (props) => {
       try {
         let result;
         if (
-          values?.category === "Contact" &&
+          values?.category === "Client" &&
           assignToContactData?.length <= 0
         ) {
           result = await getApi(
             user?.role === "superAdmin"
-              ? "api/contact/"
-              : `api/contact/?createBy=${user._id}`,
+              ? "api/client/"
+              : `api/client/?createBy=${user._id}`,
           );
           setAssignToContactData(result?.data);
         } else if (
@@ -203,7 +203,7 @@ const Editopportunityproject = (props) => {
       }
     }
   };
-  const [leadAccess, contactAccess] = HasAccess(["Leads", "Contacts"]);
+  const [leadAccess, contactAccess] = HasAccess(["Leads", "Clients"]);
   const setValueProperty = assignToProperyData?.map((item) => ({
     ...item,
     value: item?._id,
@@ -226,7 +226,7 @@ const Editopportunityproject = (props) => {
         </ModalHeader>
         <ModalBody>
           {/* Contact Model*/}
-          <ContactModel
+          <ClientModel
             isOpen={contactModelOpen}
             data={assignToContactData}
             onClose={setContactModel}
@@ -342,7 +342,7 @@ const Editopportunityproject = (props) => {
                   <Radio value="None">None</Radio>
                   <>
                     {(user?.role === "superAdmin" || contactAccess?.create) && (
-                      <Radio value="Contact">Contact</Radio>
+                      <Radio value="Client">Contact</Radio>
                     )}
                     {(user?.role === "superAdmin" || leadAccess?.create) && (
                       <Radio value="Lead">Lead</Radio>
@@ -356,7 +356,7 @@ const Editopportunityproject = (props) => {
               </Text>
             </GridItem>
             <GridItem colSpan={{ base: 12, md: 12 }}>
-              {values?.category === "Contact" ? (
+              {values?.category === "Client" ? (
                 <>
                   <GridItem colSpan={{ base: 12, md: 12 }}>
                     <FormLabel
@@ -390,7 +390,7 @@ const Editopportunityproject = (props) => {
                         {assignToContactData?.map((item) => {
                           return (
                             <option value={item?._id} key={item?._id}>
-                              {values?.category === "Contact"
+                              {values?.category === "Client"
                                 ? `${item?.fullName}`
                                 : item?.leadName}
                             </option>

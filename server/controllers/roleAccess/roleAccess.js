@@ -33,7 +33,7 @@ const add = async (req, res) => {
         "Meetings",
         "Tasks",
         "Properties",
-        "Contacts",
+        "Clients",
         "Leads",
         "Documents",
         "Email Template",

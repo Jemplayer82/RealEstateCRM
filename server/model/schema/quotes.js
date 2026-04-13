@@ -23,7 +23,7 @@ const Quotes = new mongoose.Schema({
   },
   contact: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Contacts",
+    ref: "Clients",
   },
   property: {
     type: mongoose.Schema.Types.ObjectId,

@@ -42,7 +42,7 @@ const Invoices = new mongoose.Schema({
     },
     contact: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Contacts",
+        ref: "Clients",
     },
     quotesId: {
         type: mongoose.Schema.Types.ObjectId,

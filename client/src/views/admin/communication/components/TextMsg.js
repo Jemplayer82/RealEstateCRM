@@ -67,8 +67,8 @@ const TextMsg = () => {
   const fetchData = async () => {
     let result = await getApi(
       user?.role === "superAdmin"
-        ? "api/contact/"
-        : `api/contact/?createBy=${user?._id}`,
+        ? "api/client/"
+        : `api/client/?createBy=${user?._id}`,
     );
     values.createFor = result?._id;
     setData(result?.data);

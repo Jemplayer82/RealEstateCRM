@@ -135,7 +135,7 @@ function OpprtunityImport() {
           setImportedFileFields(fileHeadingFields);
         } else {
           toast.error("Empty or invalid CSV file");
-          navigate("/contacts");
+          navigate("/clients");
         }
       } else if (extension === "xlsx") {
         const data = new Uint8Array(target?.result);
@@ -162,7 +162,7 @@ function OpprtunityImport() {
           setImportedFileFields(fileHeadingFields);
         } else {
           toast.error("Empty or invalid XLSX file");
-          navigate("/contacts");
+          navigate("/clients");
         }
       }
     };

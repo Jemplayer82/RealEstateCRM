@@ -21,7 +21,7 @@ const index = async (req, res) => {
         let routes = [
             "Dashboard",
             "Leads",
-            "Contacts",
+            "Clients",
             "Properties",
             "Opportunities",
             "Opportunity Project",

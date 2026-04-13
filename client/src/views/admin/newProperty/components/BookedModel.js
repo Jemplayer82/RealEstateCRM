@@ -76,7 +76,7 @@ function BookedModel(props) {
 
   const formik = useFormik({
     initialValues: {
-      category: "contact",
+      category: "client",
       currency: "ksh",
       lead: "",
       contact: "",

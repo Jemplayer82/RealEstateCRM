@@ -24,7 +24,7 @@ const email = new mongoose.Schema({
   },
   createByContact: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Contact",
+    ref: "Clients",
   },
   salesAgent: {
     type: mongoose.Schema.Types.ObjectId,

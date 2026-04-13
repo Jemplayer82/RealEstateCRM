@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const contactRoute = require('./contact/_routes')
+const clientRoute = require('./client/_routes')
 const propertyRoute = require('./property/_routes');
 const leadRoute = require('./lead/_routes');
 const taskRoute = require('./task/_routes');
@@ -32,7 +32,7 @@ const opportunitiesproject = require("./opportunityproject/_router")
 const bankDetailsRoute = require("./bankDetails/_routes")
 
 //Api`s
-router.use('/contact', contactRoute);
+router.use('/client', clientRoute);
 router.use('/property', propertyRoute)
 router.use('/lead', leadRoute)
 router.use('/task', taskRoute);

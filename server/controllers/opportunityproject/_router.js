@@ -3,7 +3,7 @@ const auth = require('../../middelwares/auth');
 const opportunityproject = require('./opportunityproject')
 
 const router = express.Router()
-router.get("/", opportunityproject.index);
+router.get("/", auth, opportunityproject.index);
 router.post('/addMany', auth, opportunityproject.addMany)
 router.get('/view/:id', auth, opportunityproject.view)
 router.post('/add', auth, opportunityproject.add)

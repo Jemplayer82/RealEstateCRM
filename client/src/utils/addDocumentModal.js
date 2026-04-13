@@ -36,7 +36,7 @@ const AddDocumentModal = ({
     files: "",
     filename: "",
     linkLead: from === "lead" && linkId,
-    linkContact: from === "contact" && linkId,
+    linkContact: from === "client" && linkId,
     createBy: user?._id,
   };
 

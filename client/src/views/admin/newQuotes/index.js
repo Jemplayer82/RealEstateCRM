@@ -52,7 +52,7 @@ const Index = (props) => {
   const [permission, accountAccess, contactAccess] = HasAccess([
     "Quotes",
     "Account",
-    "Contacts",
+    "Clients",
   ]);
 
   const actionHeader = {
