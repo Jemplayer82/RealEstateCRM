@@ -355,8 +355,8 @@ const leadFields = [
         value: "Land",
       },
       {
-        name: "Manssonnate",
-        value: "Manssonnate",
+        name: "House",
+        value: "House",
       },
     ],
     validation: [
