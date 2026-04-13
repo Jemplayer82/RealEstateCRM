@@ -802,15 +802,16 @@ const PropertyDocuments = async (req, res) => {
 
 const scrapeMls = async (req, res) => {
   try {
-    const { mls_id } = req.body;
-    if (!mls_id) {
-      return res.status(400).json({ success: false, error: "mls_id is required" });
+    const { mls_id, location } = req.body;
+    const searchTerm = location || mls_id;
+    if (!searchTerm) {
+      return res.status(400).json({ success: false, error: "location is required" });
     }
 
     const response = await fetch("http://python-service:5002/scrape", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mls_id }),
+      body: JSON.stringify({ location: searchTerm }),
     });
 
     const data = await response.json();

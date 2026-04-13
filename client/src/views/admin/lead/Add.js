@@ -115,7 +115,7 @@ const Add = (props) => {
     if (!mlsInput.trim()) return;
     try {
       setIsMlsLoading(true);
-      const scrapeRes = await postApi("api/property/scrape-mls", { mls_id: mlsInput.trim() });
+      const scrapeRes = await postApi("api/property/scrape-mls", { location: mlsInput.trim() });
       if (scrapeRes?.status !== 200 || !scrapeRes?.data?.data) {
         toast.error(scrapeRes?.data?.error || "MLS number not found");
         return;
@@ -192,7 +192,7 @@ const Add = (props) => {
                       value={mlsInput}
                       onChange={(e) => setMlsInput(e.target.value)}
                       onKeyDown={(e) => { if (e.key === "Enter") handleMlsLookupAndCreate(); }}
-                      placeholder="Enter MLS number to auto-create listing"
+                      placeholder="Enter property address to auto-create listing"
                       fontSize="sm"
                       fontWeight="500"
                     />

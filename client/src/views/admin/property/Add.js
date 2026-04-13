@@ -80,7 +80,7 @@ const Add = (props) => {
     if (!mlsNumber.trim()) return;
     try {
       setIsMlsLoding(true);
-      const response = await postApi("api/property/scrape-mls", { mls_id: mlsNumber.trim() });
+      const response = await postApi("api/property/scrape-mls", { location: mlsNumber.trim() });
       if (response?.status === 200 && response?.data?.success) {
         const d = response.data.data;
         const updates = {};
@@ -98,7 +98,7 @@ const Add = (props) => {
         if (d.baths !== undefined && d.baths !== null) updates.baths = d.baths;
         if (d.sqft !== undefined && d.sqft !== null) updates.sqft = d.sqft;
         formik.setValues({ ...formik.values, ...updates });
-        toast.success("Property data loaded from MLS");
+        toast.success("Property data loaded");
       } else {
         toast.error(response?.data?.error || "MLS number not found");
       }
@@ -141,11 +141,11 @@ const Add = (props) => {
                   color: "#2d3748",
                 }}
               >
-                MLS Number Lookup
+                Address Lookup
               </p>
               <InputGroup size="sm">
                 <Input
-                  placeholder="Enter MLS number"
+                  placeholder="Enter property address (e.g. 123 Main St, Dallas TX)"
                   value={mlsNumber}
                   onChange={(e) => setMlsNumber(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") handleMlsLookup(); }}
