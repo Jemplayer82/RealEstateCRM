@@ -26,6 +26,7 @@ import AccountAdvanceSearch from "./components/AccountAdvanceSearch";
 import { fetchAccountData } from "../../../redux/slices/accountSlice";
 import CommonDeleteModel from "../../../components/commonDeleteModel";
 import ImportModal from "./components/ImportModel";
+import { formatPhoneUS } from 'utils/phone';
 
 const Index = (props) => {
   const [action, setAction] = useState(false);
@@ -133,6 +134,7 @@ const Index = (props) => {
     {
       Header: "Office Phone",
       accessor: "officePhone",
+      cell: ({ value }) => formatPhoneUS(value) || " - ",
     },
     {
       Header: "Fax",

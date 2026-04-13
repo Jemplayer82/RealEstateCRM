@@ -5,9 +5,9 @@ export const leadSchema = yup.object({
   leadName: yup.string().required("Lead Name Is required"),
   leadEmail: yup.string().email().required("Lead Email Is required"),
   leadPhoneNumber: yup
-    .number()
-    .min(1000000000, "Phone number is invalid")
-    .max(999999999999, "Phone number is invalid")
+    .string()
+    .transform((val) => String(val ?? "").replace(/\D/g, ""))
+    .matches(/^\d{10}$/, "Enter a valid 10-digit US phone number")
     .required("Lead Phone Number Is required"),
   leadAddress: yup.string().required("Lead Address Is required"),
   // Lead Source and Details:

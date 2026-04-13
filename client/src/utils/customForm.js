@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react"; // Assuming you are using Chakra UI
 import { HSeparator } from "components/separator/Separator";
 import { EmailIcon, PhoneIcon, StarIcon } from "@chakra-ui/icons";
+import { formatPhoneLive, formatPhoneUS, normalizePhone } from "utils/phone";
 
 const CustomForm = ({
   moduleData,
@@ -161,14 +162,22 @@ const CustomForm = ({
                           )}
                           <Input
                             fontSize="sm"
-                            type={field?.type}
+                            type={field?.type === "tel" ? "text" : field?.type}
                             id={field?.name}
                             name={field?.name}
-                            onChange={handleChange}
+                            onChange={field?.type === "tel"
+                              ? (e) => {
+                                  const formatted = formatPhoneLive(e.target.value);
+                                  e.target.value = formatted;
+                                  handleChange(e);
+                                }
+                              : handleChange}
                             onBlur={handleBlur}
-                            value={values[field?.name]}
+                            value={field?.type === "tel"
+                              ? formatPhoneLive(values[field?.name])
+                              : values[field?.name]}
                             fontWeight="500"
-                            placeholder={`Enter ${field?.label}`}
+                            placeholder={field?.type === "tel" ? "(XXX) XXX-XXXX" : `Enter ${field?.label}`}
                             borderColor={
                               errors?.[field?.name] && touched?.[field?.name]
                                 ? "red.300"
@@ -295,14 +304,22 @@ const CustomForm = ({
                         )}
                         <Input
                           fontSize="sm"
-                          type={field?.type}
+                          type={field?.type === "tel" ? "text" : field?.type}
                           id={field?.name}
                           name={field?.name}
-                          onChange={handleChange}
+                          onChange={field?.type === "tel"
+                            ? (e) => {
+                                const formatted = formatPhoneLive(e.target.value);
+                                e.target.value = formatted;
+                                handleChange(e);
+                              }
+                            : handleChange}
                           onBlur={handleBlur}
-                          value={values[field?.name]}
+                          value={field?.type === "tel"
+                            ? formatPhoneLive(values[field?.name])
+                            : values[field?.name]}
                           fontWeight="500"
-                          placeholder={`Enter ${field?.label}`}
+                          placeholder={field?.type === "tel" ? "(XXX) XXX-XXXX" : `Enter ${field?.label}`}
                           borderColor={
                             errors?.[field?.name] && touched?.[field?.name]
                               ? "red.300"
@@ -425,14 +442,22 @@ const CustomForm = ({
                       )}
                       <Input
                         fontSize="sm"
-                        type={field?.type}
+                        type={field?.type === "tel" ? "text" : field?.type}
                         id={field?.name}
                         name={field?.name}
-                        onChange={handleChange}
+                        onChange={field?.type === "tel"
+                          ? (e) => {
+                              const formatted = formatPhoneLive(e.target.value);
+                              e.target.value = formatted;
+                              handleChange(e);
+                            }
+                          : handleChange}
                         onBlur={handleBlur}
-                        value={values[field?.name]}
+                        value={field?.type === "tel"
+                          ? formatPhoneLive(values[field?.name])
+                          : values[field?.name]}
                         fontWeight="500"
-                        placeholder={`Enter ${field?.label}`}
+                        placeholder={field?.type === "tel" ? "(XXX) XXX-XXXX" : `Enter ${field?.label}`}
                         borderColor={
                           errors?.[field?.name] && touched?.[field?.name]
                             ? "red.300"

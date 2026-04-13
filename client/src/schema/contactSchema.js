@@ -7,14 +7,14 @@ export const contactSchema = yup.object({
   title: yup.string().required("Title is required"),
   email: yup.string().email().required("Email is required"),
   phoneNumber: yup
-    .number()
-    .min(1000000000, "Phone number is invalid")
-    .max(999999999999, "Phone number is invalid")
-    .required("Phonenumber is Required"),
+    .string()
+    .transform((val) => String(val ?? "").replace(/\D/g, ""))
+    .matches(/^\d{10}$/, "Enter a valid 10-digit US phone number")
+    .required("Phone number is required"),
   mobileNumber: yup
-    .number()
-    .min(1000000000, "Phone number is invalid")
-    .max(999999999999, "Phone number is invalid")
+    .string()
+    .transform((val) => String(val ?? "").replace(/\D/g, ""))
+    .matches(/^\d{10}$/, "Enter a valid 10-digit US phone number")
     .notRequired(),
   physicalAddress: yup.string().required("Physical address is required"),
   mailingAddress: yup.string(),

@@ -4,11 +4,13 @@ export const accountSchema = yup.object({
   name: yup.string().required("Account Name Is required"),
   officePhone: yup
     .string()
-    .matches(/^\d{10}$/, "Office Number must be exactly 10 digits")
+    .transform((val) => String(val ?? "").replace(/\D/g, ""))
+    .matches(/^\d{10}$/, "Enter a valid 10-digit US phone number")
     .notRequired(),
   alternatePhone: yup
     .string()
-    .matches(/^\d{10}$/, "Office Number must be exactly 10 digits")
+    .transform((val) => String(val ?? "").replace(/\D/g, ""))
+    .matches(/^\d{10}$/, "Enter a valid 10-digit US phone number")
     .notRequired(),
   website: yup.string().url("Enter a valid URL").notRequired(),
   emailAddress: yup.string().email("Enter a valid Email Address").notRequired(),

@@ -42,6 +42,7 @@ import { useFormik } from "formik";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { accountSchema } from "../../../schema/accountSchema";
+import { formatPhoneUS } from 'utils/phone';
 
 const View = (props) => {
   const params = useParams();
@@ -362,7 +363,7 @@ const View = (props) => {
                       )
                     }
                   >
-                    {data?.officePhone ? data?.officePhone : " - "}
+                    {data?.officePhone ? formatPhoneUS(data?.officePhone) : " - "}
                   </Text>
                 )}
               </GridItem>
@@ -403,7 +404,7 @@ const View = (props) => {
                       )
                     }
                   >
-                    {data?.alternatePhone ? data?.alternatePhone : " - "}
+                    {data?.alternatePhone ? formatPhoneUS(data?.alternatePhone) : " - "}
                   </Text>
                 )}
               </GridItem>

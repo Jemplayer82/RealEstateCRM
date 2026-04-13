@@ -34,6 +34,7 @@ import { setUser } from "../../../redux/slices/localSlice";
 import CommonDeleteModel from "components/commonDeleteModel";
 import { deleteApi } from "services/api";
 import AddEditUser from "./AddEditUser";
+import { formatPhoneUS } from 'utils/phone';
 
 const View = () => {
   const RoleColumn = [
@@ -235,7 +236,7 @@ const View = () => {
                 <Text fontSize="sm" fontWeight="bold" color={"blackAlpha.900"}>
                   Phone Number
                 </Text>
-                <Text>{data?.phoneNumber ? data?.phoneNumber : " - "}</Text>
+                <Text>{data?.phoneNumber ? formatPhoneUS(data?.phoneNumber) : " - "}</Text>
               </GridItem>
               <GridItem colSpan={{ base: 2, md: 1 }}>
                 <Text fontSize="sm" fontWeight="bold" color={"blackAlpha.900"}>
