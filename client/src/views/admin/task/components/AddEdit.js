@@ -81,9 +81,6 @@ const AddEdit = (props) => {
     reminder: "",
     start: "",
     end: "",
-    backgroundColor: "",
-    borderColor: "#ffffff",
-    textColor: "",
     allDay: false,
     display: "",
     url: "",
@@ -607,98 +604,6 @@ const AddEdit = (props) => {
                   {errors?.end && touched?.end && errors?.end}
                 </Text>
               </GridItem>
-              <GridItem colSpan={{ base: 12, sm: 4 }}>
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  mb="8px"
-                >
-                  Background-Color
-                </FormLabel>
-                <Input
-                  type="color"
-                  fontSize="sm"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values?.backgroundColor}
-                  name="backgroundColor"
-                  fontWeight="500"
-                  borderColor={
-                    errors?.backgroundColor && touched?.backgroundColor
-                      ? "red.300"
-                      : null
-                  }
-                />
-                <Text mb="10px" color={"red"}>
-                  {" "}
-                  {errors?.backgroundColor &&
-                    touched?.backgroundColor &&
-                    errors?.backgroundColor}
-                </Text>
-              </GridItem>
-              <GridItem colSpan={{ base: 12, sm: 4 }}>
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  mb="8px"
-                >
-                  Border-Color
-                </FormLabel>
-                <Input
-                  fontSize="sm"
-                  type="color"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values?.borderColor}
-                  name="borderColor"
-                  placeholder="borderColor"
-                  fontWeight="500"
-                  borderColor={
-                    errors?.borderColor && touched?.borderColor
-                      ? "red.300"
-                      : null
-                  }
-                />
-                <Text mb="10px" color={"red"}>
-                  {" "}
-                  {errors?.borderColor &&
-                    touched?.borderColor &&
-                    errors?.borderColor}
-                </Text>
-              </GridItem>
-              <GridItem colSpan={{ base: 12, sm: 4 }}>
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  mb="8px"
-                >
-                  Text-Color
-                </FormLabel>
-                <Input
-                  fontSize="sm"
-                  type="color"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values?.textColor}
-                  name="textColor"
-                  placeholder="textColor"
-                  fontWeight="500"
-                  textColor={
-                    errors?.textColor && touched?.textColor ? "red.300" : null
-                  }
-                />
-                <Text mb="10px" color={"red"}>
-                  {" "}
-                  {errors?.textColor && touched?.textColor && errors?.textColor}
-                </Text>
-              </GridItem>
-
               <GridItem colSpan={{ base: 12, md: 6 }}>
                 <FormLabel
                   display="flex"

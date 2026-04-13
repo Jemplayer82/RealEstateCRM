@@ -155,16 +155,12 @@ const contactFields = [
         value: "Email",
       },
       {
-        name: "Virtual Meet",
-        value: "Virtual Meet",
+        name: "Cell",
+        value: "Cell",
       },
       {
-        name: "Visit",
-        value: "Visit",
-      },
-      {
-        name: "Virtual Meet",
-        value: "Virtual Meet",
+        name: "Meeting",
+        value: "Meeting",
       },
     ],
     validation: [

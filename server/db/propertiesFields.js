@@ -21,7 +21,7 @@ const propertiesFields = [
     },
     {
       name: "lrNo",
-      label: "L.R. NO. ",
+      label: "MLS Number",
       type: "text",
       fixed: true,
       delete: false,
@@ -32,7 +32,7 @@ const propertiesFields = [
       options: [],
       validation: [
         {
-          require: true,
+          require: false,
           message: "",
         },
       ],
@@ -51,20 +51,20 @@ const propertiesFields = [
       "isView": false,
       "options": [
         {
-          "name": "Available",
-          "value": "Available"
+          "name": "For Sale",
+          "value": "For Sale"
         },
         {
-          "name": "Booked",
-          "value": "Booked"
+          "name": "Pending",
+          "value": "Pending"
+        },
+        {
+          "name": "Contingent",
+          "value": "Contingent"
         },
         {
           "name": "Sold",
           "value": "Sold"
-        },
-        {
-          "name": "Blocked",
-          "value": "Blocked"
         }
       ],
       "validation": [
@@ -99,7 +99,7 @@ const propertiesFields = [
     // },
     {
       "name": "Floor",
-      "label": "Floor",
+      "label": "Floors",
       "type": "number",
       "fixed": true,
       "isDefault": false,
@@ -191,18 +191,5 @@ const propertiesFields = [
       "isTableField": false,
       "isView": false
     },
-    {
-      "name": "Facility",
-      "label": "Facility",
-      "type": "text",
-      "fixed": true,
-      "isDefault": false,
-      "editable": false,
-      "delete": false,
-      "belongsTo": null,
-      "backendType": "Mixed",
-      "isTableField": false,
-      "isView": false
-    }
   ];
 exports.propertiesFields = propertiesFields;
