@@ -804,6 +804,7 @@ const scrapeMls = async (req, res) => {
   try {
     const { mls_id, location } = req.body;
     const searchTerm = location || mls_id;
+    console.log("[scrapeMls] called with searchTerm:", searchTerm);
     if (!searchTerm) {
       return res.status(400).json({ success: false, error: "location is required" });
     }
@@ -815,9 +816,10 @@ const scrapeMls = async (req, res) => {
     });
 
     const data = await response.json();
+    console.log("[scrapeMls] python-service status:", response.status, "success:", data.success);
     return res.status(response.status).json(data);
   } catch (err) {
-    console.error("Failed to scrape MLS:", err);
+    console.error("[scrapeMls] Failed to scrape MLS:", err.message);
     return res.status(500).json({ success: false, error: "Failed to reach scraping service" });
   }
 };

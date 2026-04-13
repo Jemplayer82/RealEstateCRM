@@ -100,11 +100,19 @@ const Add = (props) => {
         formik.setValues({ ...formik.values, ...updates });
         toast.success("Property data loaded");
       } else {
-        toast.error(response?.data?.error || "MLS number not found");
+        // postApi catches errors and returns the axios error object — unwrap properly
+        const errMsg =
+          response?.data?.error ||
+          response?.response?.data?.error ||
+          response?.response?.data?.message ||
+          (response?.response?.status ? `HTTP ${response.response.status}` : null) ||
+          "Address not found";
+        console.log("[Lookup] non-200 response:", response?.status, response?.response?.status, JSON.stringify(response?.data || response?.response?.data));
+        toast.error(errMsg);
       }
     } catch (e) {
-      toast.error("MLS number not found");
-      console.log(e);
+      console.error("[Lookup] exception:", e);
+      toast.error("Lookup failed: " + (e?.message || "unknown error"));
     } finally {
       setIsMlsLoding(false);
     }
