@@ -26,6 +26,42 @@ import Spinner from "components/spinner/Spinner";
 import { postApi } from "services/api";
 import { constant } from "constant";
 
+const SetupField = ({ name, label, type = "text", placeholder, showToggle, show, onToggle, values, errors, touched, handleChange, handleBlur, textColor, brandStars, textColorSecondary }) => (
+  <FormControl isInvalid={errors[name] && touched[name]}>
+    <FormLabel display="flex" ms="4px" fontSize="sm" fontWeight="500" color={textColor} mb="8px">
+      {label}<Text color={brandStars}>*</Text>
+    </FormLabel>
+    <InputGroup size="md">
+      <Input
+        fontSize="sm"
+        name={name}
+        type={showToggle ? (show ? "text" : "password") : type}
+        placeholder={placeholder}
+        value={values[name]}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        mb={errors[name] && touched[name] ? undefined : "16px"}
+        fontWeight="500"
+        size="lg"
+        borderColor={errors[name] && touched[name] ? "red.300" : undefined}
+      />
+      {showToggle && (
+        <InputRightElement display="flex" alignItems="center" mt="4px">
+          <Icon
+            color={textColorSecondary}
+            _hover={{ cursor: "pointer" }}
+            as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
+            onClick={onToggle}
+          />
+        </InputRightElement>
+      )}
+    </InputGroup>
+    {errors[name] && touched[name] && (
+      <FormErrorMessage mb="16px">{errors[name]}</FormErrorMessage>
+    )}
+  </FormControl>
+);
+
 const setupSchema = Yup.object({
   firstName: Yup.string().min(1).max(50).required("First name is required"),
   lastName: Yup.string().min(1).max(50).required("Last name is required"),
@@ -97,41 +133,7 @@ export default function Setup({ onSetupComplete }) {
 
   const { errors, values, touched, handleBlur, handleChange, handleSubmit } = formik;
 
-  const Field = ({ name, label, type = "text", placeholder, showToggle, show, onToggle }) => (
-    <FormControl isInvalid={errors[name] && touched[name]}>
-      <FormLabel display="flex" ms="4px" fontSize="sm" fontWeight="500" color={textColor} mb="8px">
-        {label}<Text color={brandStars}>*</Text>
-      </FormLabel>
-      <InputGroup size="md">
-        <Input
-          fontSize="sm"
-          name={name}
-          type={showToggle ? (show ? "text" : "password") : type}
-          placeholder={placeholder}
-          value={values[name]}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          mb={errors[name] && touched[name] ? undefined : "16px"}
-          fontWeight="500"
-          size="lg"
-          borderColor={errors[name] && touched[name] ? "red.300" : undefined}
-        />
-        {showToggle && (
-          <InputRightElement display="flex" alignItems="center" mt="4px">
-            <Icon
-              color={textColorSecondary}
-              _hover={{ cursor: "pointer" }}
-              as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
-              onClick={onToggle}
-            />
-          </InputRightElement>
-        )}
-      </InputGroup>
-      {errors[name] && touched[name] && (
-        <FormErrorMessage mb="16px">{errors[name]}</FormErrorMessage>
-      )}
-    </FormControl>
-  );
+  const fieldProps = { values, errors, touched, handleChange, handleBlur, textColor, brandStars, textColorSecondary };
 
   return (
     <DefaultAuth>
@@ -170,28 +172,28 @@ export default function Setup({ onSetupComplete }) {
             <VStack spacing={0} align="stretch">
               <Flex gap={4}>
                 <Box flex={1}>
-                  <Field name="firstName" label="First Name" placeholder="John" />
+                  <SetupField {...fieldProps} name="firstName" label="First Name" placeholder="John" />
                 </Box>
                 <Box flex={1}>
-                  <Field name="lastName" label="Last Name" placeholder="Doe" />
+                  <SetupField {...fieldProps} name="lastName" label="Last Name" placeholder="Doe" />
                 </Box>
               </Flex>
 
-              <Field
+              <SetupField {...fieldProps}
                 name="username"
                 label="Email"
                 type="email"
                 placeholder="admin@yourcompany.com"
               />
 
-              <Field
+              <SetupField {...fieldProps}
                 name="phoneNumber"
                 label="Phone (optional)"
                 type="tel"
                 placeholder="+1 555 000 0000"
               />
 
-              <Field
+              <SetupField {...fieldProps}
                 name="password"
                 label="Password"
                 placeholder="Min. 8 characters"
@@ -200,7 +202,7 @@ export default function Setup({ onSetupComplete }) {
                 onToggle={() => setShowPass(!showPass)}
               />
 
-              <Field
+              <SetupField {...fieldProps}
                 name="confirmPassword"
                 label="Confirm Password"
                 placeholder="Re-enter password"
