@@ -15,6 +15,7 @@ import { useState } from "react";
 import { postApi } from "services/api";
 import { generateValidationSchema } from "utils";
 import CustomForm from "utils/customForm";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
 const Add = (props) => {
@@ -57,11 +58,15 @@ const Add = (props) => {
         moduleId: props?.contactData?._id,
       });
       if (response?.status === 200) {
+        toast.success("Contact added successfully");
         props.onClose();
         props.setAction((pre) => !pre);
+      } else {
+        toast.error(response?.response?.data?.message || "Failed to save contact");
       }
     } catch (e) {
-      console.log(e);
+      console.error("AddData error:", e);
+      toast.error("An error occurred while saving");
     } finally {
       setIsLoding(false);
     }

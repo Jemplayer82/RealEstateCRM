@@ -146,7 +146,7 @@ const Index = (props) => {
     },
     { Header: "sender Name", accessor: "senderName" },
     {
-      Header: "Realeted To",
+      Header: "Related To",
       accessor: "realeted",
       cell: ({ row }) => (
         <Text>
@@ -208,9 +208,10 @@ const Index = (props) => {
   ];
 
   const fetchData = async () => {
+    try {
     setIsLoding(true);
     const result = await dispatch(fetchEmailsData());
-    let response = [...result?.payload?.data];
+    let response = [...(result?.payload?.data || [])];
 
     response &&
       response?.length > 0 &&
@@ -238,7 +239,11 @@ const Index = (props) => {
     } else {
       toast.error("Failed to fetch data", "error");
     }
-    setIsLoding(false);
+    } catch (e) {
+      console.error("fetchData error:", e);
+    } finally {
+      setIsLoding(false);
+    }
   };
 
   // const [columns, setColumns] = useState([...tableColumns]);

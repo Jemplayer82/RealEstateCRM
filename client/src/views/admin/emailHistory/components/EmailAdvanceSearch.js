@@ -157,7 +157,7 @@ const EmailAdvanceSearch = (props) => {
                   mb="0"
                   mt={2}
                 >
-                  Realeted To
+                  Related To
                 </FormLabel>
                 <Select
                   value={values?.realetedTo}
@@ -165,7 +165,7 @@ const EmailAdvanceSearch = (props) => {
                   name="realetedTo"
                   onChange={handleChange}
                   fontWeight="500"
-                  placeholder={"Select Realeted To"}
+                  placeholder={"Select Related To"}
                 >
                   <option value="contact">Contact</option>
                   <option value="lead">Lead</option>

@@ -185,14 +185,19 @@ const Task = () => {
   ];
 
   const fetchData = async () => {
-    setIsLoding(true);
-    const result = await dispatch(fetchTaskData());
-    if (result?.payload?.status === 200) {
-      setData(result?.payload?.data);
-    } else {
-      toast.error("Failed to fetch data", "error");
+    try {
+      setIsLoding(true);
+      const result = await dispatch(fetchTaskData());
+      if (result?.payload?.status === 200) {
+        setData(result?.payload?.data);
+      } else {
+        toast.error("Failed to fetch data", "error");
+      }
+    } catch (e) {
+      console.error("fetchData error:", e);
+    } finally {
+      setIsLoding(false);
     }
-    setIsLoding(false);
   };
   const setStatusData = async (cell, e) => {
     try {

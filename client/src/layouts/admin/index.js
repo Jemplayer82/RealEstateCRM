@@ -193,11 +193,9 @@ export default function Dashboard(props) {
           return categoryActiveRoute;
         }
       } else {
-        if (
-          window?.location?.href?.indexOf(
-            routes[i]?.path?.replace("/:id", ""),
-          ) !== -1
-        ) {
+        const routePath = routes[i]?.path?.replace("/:id", "").replace("/:type", "");
+        const currentPath = window?.location?.pathname;
+        if (currentPath === routePath || currentPath?.startsWith(routePath + "/")) {
           return routes[i]?.name;
         }
       }
@@ -235,11 +233,9 @@ export default function Dashboard(props) {
           return categoryActiveRoute;
         }
       } else {
-        if (
-          window?.location?.href?.indexOf(
-            routes[i]?.path?.replace("/:id", ""),
-          ) !== -1
-        ) {
+        const routePath = routes[i]?.path?.replace("/:id", "").replace("/:type", "");
+        const currentPath = window?.location?.pathname;
+        if (currentPath === routePath || currentPath?.startsWith(routePath + "/")) {
           return routes[i];
         }
       }
@@ -408,6 +404,7 @@ export default function Dashboard(props) {
                   >
                     <Routes>
                       {getRoutes(routes)}
+                      <Route path="/role-access" element={<Navigate to="/role" replace />} />
                       <Route path="/*" element={<Navigate to="/default" />} />
                     </Routes>
                   </Suspense>

@@ -26,6 +26,7 @@ import { postApi } from "services/api";
 import { generateValidationSchema } from "utils";
 import CustomForm from "utils/customForm";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 import Edit from "./Edit";
 
 const Add = (props) => {
@@ -86,12 +87,16 @@ const Add = (props) => {
         moduleId: props?.leadData?._id,
       });
       if (response?.status === 200) {
+        toast.success("Lead added successfully");
         props.onClose();
         formik.resetForm();
         props.setAction((pre) => !pre);
+      } else {
+        toast.error(response?.response?.data?.message || "Failed to save lead");
       }
     } catch (e) {
-      console.log(e);
+      console.error("AddData error:", e);
+      toast.error("An error occurred while saving");
     } finally {
       setIsLoding(false);
     }

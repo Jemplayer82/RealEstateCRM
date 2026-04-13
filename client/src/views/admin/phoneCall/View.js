@@ -230,7 +230,7 @@ const View = () => {
                       color={"blackAlpha.900"}
                     >
                       {" "}
-                      Realeted To{" "}
+                      Related To{" "}
                     </Text>
                     <Text>
                       {data?.createBy

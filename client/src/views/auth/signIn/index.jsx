@@ -156,7 +156,7 @@ function SignIn() {
                 name="username"
                 ms={{ base: "0px", md: "0px" }}
                 type="email"
-                placeholder="mail@simmmple.com"
+                placeholder="mail@example.com"
                 mb={errors?.username && touched?.username ? undefined : "24px"}
                 fontWeight="500"
                 size="lg"

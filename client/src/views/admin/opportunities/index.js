@@ -28,7 +28,7 @@ import CommonDeleteModel from "../../../components/commonDeleteModel";
 import ImportModal from "./components/ImportModel";
 
 const Index = (props) => {
-  const title = "Opprtunities";
+  const title = "Opportunities";
   const [action, setAction] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedValues, setSelectedValues] = useState([]);
@@ -514,7 +514,7 @@ const Index = (props) => {
       setIsLoding(true);
       let response = await deleteManyApi("api/opportunity/deleteMany", ids);
       if (response?.status === 200) {
-        toast.success(`Opprtunities Delete successfully`);
+        toast.success(`Opportunities Delete successfully`);
         setSelectedValues([]);
         setDelete(false);
         setAction((pre) => !pre);
@@ -528,15 +528,19 @@ const Index = (props) => {
   };
 
   const fetchData = async () => {
-    setIsLoding(true);
-    const result = await dispatch(fetchOpportunityData());
-
-    if (result?.payload?.status === 200) {
-      setData(result?.payload?.data);
-    } else {
-      toast.error("Failed to fetch data", "error");
+    try {
+      setIsLoding(true);
+      const result = await dispatch(fetchOpportunityData());
+      if (result?.payload?.status === 200) {
+        setData(result?.payload?.data);
+      } else {
+        toast.error("Failed to fetch data", "error");
+      }
+    } catch (e) {
+      console.error("fetchData error:", e);
+    } finally {
+      setIsLoding(false);
     }
-    setIsLoding(false);
   };
 
   // const [columns, setColumns] = useState([...tableColumns]);

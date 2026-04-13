@@ -171,7 +171,7 @@ const Email = () => {
           fontWeight="500"
           mb="8px"
         >
-          Sc
+          CC
         </FormLabel>
         <Input
           fontSize="sm"

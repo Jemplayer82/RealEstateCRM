@@ -146,7 +146,7 @@ const Index = (props) => {
     },
     { Header: "Sender Name", accessor: "senderName" },
     {
-      Header: "Realeted To",
+      Header: "Related To",
       accessor: "realeted",
       cell: ({ row }) => (
         <Text>
