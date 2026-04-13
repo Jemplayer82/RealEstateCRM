@@ -22,7 +22,7 @@ cd RealEstateCRM
 docker compose up --build
 ```
 
-Visit `http://localhost:3000` -- on first run you'll see the setup page to create your admin account.
+On first run you'll see the setup page to create your admin account.
 
 ### Services
 
