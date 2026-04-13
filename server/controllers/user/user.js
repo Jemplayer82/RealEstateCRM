@@ -100,10 +100,10 @@ let deleteData = async (req, res) => {
 
     // Assuming you have retrieved the user document using userId
     const user = await User.findById(userId);
-    if (process.env.DEFAULT_USERS.includes(user?.username)) {
+    if (process.env.DEFAULT_USERS && process.env.DEFAULT_USERS.includes(user?.username)) {
       return res
         .status(400)
-        .json({ message: `You don't have access to delete ${username}` });
+        .json({ message: `You don't have access to delete ${user?.username}` });
     }
     if (!user) {
       return res
@@ -133,7 +133,7 @@ const deleteMany = async (req, res) => {
     const users = await User.find({ _id: { $in: userIds } });
 
     // Check for default users and filter them out
-    const defaultUsers = process.env.DEFAULT_USERS;
+    const defaultUsers = process.env.DEFAULT_USERS || "";
     const filteredUsers = users.filter(
       (user) => !defaultUsers.includes(user.username)
     );
@@ -207,13 +207,13 @@ const login = async (req, res) => {
       return;
     }
     // Create a JWT token
-    const token = jwt.sign({ userId: user._id }, "secret_key", {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
     res
       .status(200)
-      .setHeader("Authorization", `Bearer${token}`)
+      .setHeader("Authorization", `Bearer ${token}`)
       .json({ token: token, user });
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
@@ -236,6 +236,57 @@ const changeRoles = async (req, res) => {
   }
 };
 
+// Returns whether initial admin setup has been completed
+const setupStatus = async (req, res) => {
+  try {
+    const admin = await User.findOne({ role: 'superAdmin', deleted: false });
+    res.status(200).json({ setupComplete: !!admin });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to check setup status' });
+  }
+};
+
+// Creates the initial superAdmin account — only works if none exists yet
+const completeSetup = async (req, res) => {
+  try {
+    const existing = await User.findOne({ role: 'superAdmin', deleted: false });
+    if (existing) {
+      return res.status(403).json({ message: 'Setup has already been completed.' });
+    }
+
+    const { username, password, firstName, lastName, phoneNumber } = req.body;
+
+    if (!username || !password || !firstName || !lastName) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters.' });
+    }
+
+    const duplicate = await User.findOne({ username });
+    if (duplicate) {
+      return res.status(400).json({ message: 'An account with that email already exists.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = new User({
+      username,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      phoneNumber: phoneNumber || '',
+      role: 'superAdmin',
+    });
+    await user.save();
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    res.status(200).json({ message: 'Setup complete. Admin account created.', token, user });
+  } catch (error) {
+    console.error('Setup failed:', error.message);
+    res.status(500).json({ error: 'Setup failed.' });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -246,4 +297,6 @@ module.exports = {
   deleteData,
   edit,
   changeRoles,
+  setupStatus,
+  completeSetup,
 };

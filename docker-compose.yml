@@ -1,0 +1,37 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  server:
+    build: ./server
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      DB_URL: mongodb://mongo:27017
+      DB: RealEstateCRM
+      JWT_SECRET: d92cc8b3a525b3cd749fceaef9d0298875d42052c0bcc313f6a17430ed2f5647f7eff253f0fed70584b805c70167ad598dc0292d4c397f236e234c20995d2a7b
+      CORS_ORIGIN: http://localhost:3000
+      ADMIN_EMAIL: admin@gmail.com
+      ADMIN_PASSWORD: admin123
+      NODE_ENV: production
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_STRIPE_PUBLIC_KEY: ""
+    depends_on:
+      - server
+
+volumes:
+  mongo_data:

@@ -32,40 +32,33 @@ router.post(
 );
 router.post(
   "/add-property-photos/:id",
+  auth,
   property.upload.array("property", 10),
   property.propertyPhoto
 );
 router.post(
   "/add-virtual-tours-or-videos/:id",
+  auth,
   property.virtualTours.array("property", 10),
   property.VirtualToursorVideos
 );
 router.post(
   "/add-floor-plans/:id",
+  auth,
   property.FloorPlansStorage.array("property", 10),
   property.FloorPlans
 );
 router.post(
   "/add-property-documents/:id",
+  auth,
   property.PropertyDocumentsStorage.array("property", 10),
   property.PropertyDocuments
 );
 
-router.use(
-  "/property-documents",
-  express.static("uploads/Property/property-documents")
-);
-router.use("/offer-letter", express.static("uploads/offer-letter"));
-router.use("/floor-plans", express.static("uploads/Property/floor-plans"));
-router.use(
-  "/virtual-tours-or-videos",
-  express.static("uploads/Property/virtual-tours-or-videos")
-);
-router.use(
-  "/property-photos",
-  express.static("uploads/Property/PropertyPhotos")
-);
-// router.post('/file', property.upload.array('file', 10), property.file)
-// router.post('/file', property.upload.single('file'), property.file)
+router.use("/property-documents", auth, express.static("uploads/Property/property-documents"));
+router.use("/offer-letter", auth, express.static("uploads/offer-letter"));
+router.use("/floor-plans", auth, express.static("uploads/Property/floor-plans"));
+router.use("/virtual-tours-or-videos", auth, express.static("uploads/Property/virtual-tours-or-videos"));
+router.use("/property-photos", auth, express.static("uploads/Property/PropertyPhotos"));
 
 module.exports = router;

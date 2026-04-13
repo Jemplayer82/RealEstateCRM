@@ -4,8 +4,7 @@ import PaymentForm from "./paymentForm";
 import Card from "components/card/Card";
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
-const PUBLIC_KEY =
-  "pk_test_51Nx0ulSFr3y25H3gtYaIaVQDwcMVg1USXhA8DCu2sApXlLDf6vhCRLqqBNj2gKoeO2O5SiF5SZ1zCukR1IMztGFK00WeIq8rz3";
+const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY || "";
 
 const stirpeTestPromise = loadStripe(PUBLIC_KEY);
 

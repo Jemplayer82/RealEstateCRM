@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const User = require('../model/schema/user');
 const bcrypt = require('bcrypt');
 const { initializeLeadSchema } = require("../model/schema/lead");
@@ -83,26 +84,12 @@ const connectDB = async (DATABASE_URL, DATABASE) => {
         /*  */
         await initializedSchemas();
 
-        let adminExisting = await User.find({ role: 'superAdmin' });
+        const adminExisting = await User.find({ role: 'superAdmin' });
         if (adminExisting.length <= 0) {
-            const phoneNumber = 7874263694
-            const firstName = 'Prolink'
-            const lastName = 'Infotech'
-            const username = 'admin@gmail.com'
-            const password = 'admin123'
-            // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10);
-            // Create a new user
-            const user = new User({ _id: new mongoose.Types.ObjectId('64d33173fd7ff3fa0924a109'), username, password: hashedPassword, firstName, lastName, phoneNumber, role: 'superAdmin' });
-            // Save the user to the database
-            await user.save();
-            console.log("Admin created successfully..");
+            console.log("No admin account found. Visit the app to complete initial setup.");
         } else if (adminExisting[0].deleted === true) {
             await User.findByIdAndUpdate(adminExisting[0]._id, { deleted: false });
-            console.log("Admin Update successfully..");
-        } else if (adminExisting[0].username !== "admin@gmail.com") {
-            await User.findByIdAndUpdate(adminExisting[0]._id, { username: 'admin@gmail.com' });
-            console.log("Admin Update successfully..");
+            console.log("Admin restored successfully.");
         }
 
         console.log("Database Connected Successfully..");

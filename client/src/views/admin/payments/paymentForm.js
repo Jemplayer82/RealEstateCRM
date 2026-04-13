@@ -33,6 +33,7 @@ export default function PaymentForm() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("token") || sessionStorage.getItem("token") || "",
       },
       mode: "cors",
       body: JSON.stringify({
