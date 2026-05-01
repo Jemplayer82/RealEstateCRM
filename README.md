@@ -1,40 +1,55 @@
 # RealEstateCRM
 
-A full-featured Customer Relationship Management system built for Real Estate professionals. MERN stack (MongoDB, Express, React, Node.js), fully Dockerized, with security hardening and an interactive first-run setup.
+A full-featured Customer Relationship Management system built for real estate professionals. MERN stack (MongoDB, Express, React, Node.js), fully Dockerized, with security hardening, role-based access control, and a built-in property lookup service powered by HomeHarvest.
 
-## What it does
+## What It Does
 
-- **Contact & Lead Management** -- track clients, leads, and their lifecycle through your pipeline
-- **Property Management** -- listings with photos, floor plans, virtual tours, documents, and unit tracking for apartments
-- **Task & Calendar** -- schedule tasks, meetings, phone calls, and emails tied to contacts/leads
-- **Offer Letters** -- generate PDF offer letters from templates via Puppeteer
-- **Payments** -- Stripe integration for processing payments
-- **Email** -- send emails via nodemailer (Office 365) with template editor
-- **Role-Based Access** -- create roles with granular create/view/update/delete permissions per module
-- **Custom Fields** -- extend Leads, Contacts, and Properties with custom fields and modules
-- **Reporting** -- dashboards and analytics
+- **Contact and Lead Management** — track clients, leads, and their lifecycle through your pipeline
+- **Property Management** — listings with photos, floor plans, virtual tours, documents, and unit tracking for multi-family properties
+- **Task and Calendar** — schedule tasks, meetings, phone calls, and emails tied to contacts and leads
+- **Offer Letters** — generate PDF offer letters from templates via Puppeteer
+- **Payments** — Stripe integration for processing payments
+- **Email** — send emails via Nodemailer (Office 365) with a built-in template editor
+- **Role-Based Access** — granular create/view/update/delete permissions per module
+- **Custom Fields** — extend leads, contacts, and properties with custom fields and modules
+- **Property Lookup** — auto-fill property details from MLS data via an integrated Python service
+- **Reporting** — dashboards and analytics
 
-## Quick start (Docker)
+## Stack
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | React 17 + Chakra UI + Redux Toolkit |
+| Backend | Node.js + Express |
+| Database | MongoDB 7 |
+| Property data | Python + Flask + HomeHarvest |
+| PDF generation | Puppeteer (Chromium, server-side) |
+| Payments | Stripe |
+| Email | Nodemailer |
+| Deployment | Docker + Docker Compose |
+
+## Quick Start
 
 ```bash
-git clone https://github.com/Jemplayer82/RealEstateCRM.git
+git clone https://github.com/jemplayer82/RealEstateCRM.git
 cd RealEstateCRM
 docker compose up --build
 ```
 
-On first run you'll see the setup page to create your admin account.
+On first run, a setup page will guide you through creating the admin account.
 
 ### Services
 
 | Service | Port | Description |
 |---------|------|-------------|
-| client  | 3000 | React frontend served by nginx |
-| server  | 5001 | Express API |
-| mongo   | 27017 | MongoDB 7 |
+| client | 3000 | React frontend served by nginx |
+| server | 5001 | Express API |
+| python-service | 5002 | Property lookup via HomeHarvest |
+| mongo | 27017 | MongoDB |
 
-### Environment variables
+## Environment Variables
 
-Set these in `docker-compose.yml` under `server.environment` or in a `.env` file:
+Set these under `server.environment` in `docker-compose.yml` or in a `.env` file:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -42,93 +57,66 @@ Set these in `docker-compose.yml` under `server.environment` or in a `.env` file
 | `DB_URL` | Yes | MongoDB connection string |
 | `DB` | Yes | Database name |
 | `CORS_ORIGIN` | No | Allowed origin (default: `http://localhost:3000`) |
-| `ADMIN_EMAIL` | No | Initial admin email (set via setup page) |
-| `ADMIN_PASSWORD` | No | Initial admin password (set via setup page) |
 | `REACT_APP_STRIPE_PUBLIC_KEY` | No | Stripe publishable key |
 
-### Useful commands
+The admin account is created through the first-run setup page — no hardcoded credentials.
+
+## Useful Commands
 
 ```bash
 docker compose up -d          # start in background
-docker compose down            # stop
-docker compose down -v         # stop and wipe database
-docker compose logs server     # view server logs
-docker compose build           # rebuild after code changes
+docker compose down           # stop
+docker compose down -v        # stop and wipe database
+docker compose logs server    # view server logs
+docker compose build          # rebuild after code changes
 ```
 
-## What has been changed (from upstream)
+## What Has Been Changed From Upstream
 
-### Dockerization
-- Added `docker-compose.yml` with 3-service stack (mongo, server, client)
-- `server/Dockerfile` -- Node 18 slim with Chromium for Puppeteer
-- `client/Dockerfile` -- multi-stage build (Node build step, nginx to serve)
-- `client/nginx.conf` -- reverse proxy `/api/` to server, SPA fallback for React Router
-- `.dockerignore` files to keep builds fast
+This project started as a fork but has been significantly reworked. The original UI shell is the only thing that remains from the source; everything else — the backend architecture, security model, deployment setup, and data integrations — has been rebuilt.
 
-### Security hardening (30+ fixes)
+### Full Dockerization
 
-**Critical fixes:**
+- `docker-compose.yml` with a 4-service stack (MongoDB, server, client, python-service)
+- `server/Dockerfile` — Node 18 slim with Chromium for Puppeteer
+- `client/Dockerfile` — multi-stage build (Node build step, nginx to serve)
+- `client/nginx.conf` — reverse proxies `/api/` to the server with SPA fallback for React Router
+- `.dockerignore` files to keep builds lean
+
+### Python Property Lookup Service
+
+An additional Flask microservice (`python-service/`) uses HomeHarvest to look up MLS property data by address and auto-fill fields when adding a new property in the CRM.
+
+### Security Hardening (30+ fixes)
+
+**Critical:**
 - JWT secret moved from hardcoded `'secret_key'` to `process.env.JWT_SECRET`
 - Added `auth` middleware to 9 previously unprotected routes (file uploads, payments, documents)
-- Removed open `/admin-register` endpoint (anyone could create superAdmin accounts)
-- Removed hardcoded default admin credentials (`admin@gmail.com` / `admin123`)
-- Locked down CORS from `*` to configured origin
+- Removed the open `/admin-register` endpoint that allowed anyone to create superAdmin accounts
+- Removed hardcoded default admin credentials
+- CORS locked down from `*` to a configured origin
 
 **Server middleware:**
 - Added `helmet` for security headers
-- Added `express-rate-limit` (100 req/15min global, 10/15min on login/register)
-- Added body size limit (1MB)
+- Added `express-rate-limit` (100 req / 15 min globally; 10 req / 15 min on login and register)
+- Added 1MB body size limit
+- Added `express-mongo-sanitize` to prevent NoSQL injection
 
 **File uploads:**
-- Centralized multer config (`middelwares/uploadConfig.js`) with MIME type allowlists and file size limits
-- Images: JPEG/PNG/GIF/WebP only, 5MB max
-- Documents: images + PDF/Word/Excel, 10MB max
-- Videos: MP4/WebM/QuickTime, 50MB max
+- Centralized Multer configuration with MIME type allowlists and size limits
+  - Images: JPEG / PNG / GIF / WebP, 5MB max
+  - Documents: images + PDF / Word / Excel, 10MB max
+  - Videos: MP4 / WebM / QuickTime, 50MB max
 - All `express.static` routes now require authentication
 
 **Input validation:**
-- Added `express-validator` on login and register routes
+- `express-validator` on login and register routes
 - Password complexity enforced (min 8 chars, uppercase, lowercase, number)
-- EJS template injection sanitized with `sanitize-html` before Puppeteer rendering
+- EJS templates sanitized with `sanitize-html` before Puppeteer rendering
 
 **Client-side:**
-- Added auth token to payment form `fetch` call (was sending payments unauthenticated)
-- Moved hardcoded Stripe public key to environment variable
-- Added `DOMPurify` to sanitize `dangerouslySetInnerHTML` in email history view (XSS fix)
-- Added axios 401 interceptor -- auto-logout on expired/invalid tokens
-- Cleaned `console.error` calls to avoid leaking sensitive data
-
-**Auth middleware fixes:**
-- Added missing `return` before 401 response (was falling through to `jwt.verify` on missing token)
-- Changed catch status from 500 to 401
-- Fixed `Bearer${token}` to `Bearer ${token}` (missing space)
-- Increased bcrypt rounds from 10 to 12
-
-### First-run admin setup
-- New `/setup` page shown on first visit when no admin account exists
-- `GET /api/user/setup-status` -- public endpoint, returns `{ setupComplete: bool }`
-- `POST /api/user/complete-setup` -- creates initial superAdmin, locked after first use (returns 403)
-- Removed auto-seed of hardcoded admin from `db/config.js`
-
-### Bug fixes
-- **User delete broken** -- `process.env.DEFAULT_USERS.includes()` crashed on undefined; fixed with null check
-- **User delete error message** -- referenced undefined `username` variable; fixed to `user?.username`
-- **Email editing disabled** -- user edit modal had email field hardcoded to `disabled` in edit mode; removed restriction
-- **Role access permissions** -- create and view checkboxes were coupled (checking one auto-checked the other); made them independent. Update/delete still require view.
-
-### New files
-- `docker-compose.yml`
-- `server/Dockerfile`, `server/.dockerignore`
-- `client/Dockerfile`, `client/.dockerignore`, `client/nginx.conf`
-- `server/middelwares/uploadConfig.js` -- shared multer config with validation
-- `server/middelwares/validate.js` -- express-validator helper
-- `client/src/views/auth/setup/index.jsx` -- first-run setup page
-- `SECURITY_PLAN.md` -- detailed security audit and remediation plan
-
-## Original project
-
-Forked from [prolinkinfo/RealEstateCRM](https://github.com/prolinkinfo/RealEstateCRM).
-
-## License
-
-MIT
+- Auth token added to payment form fetch call (was sending unauthenticated)
+- Stripe public key moved to environment variable
+- `DOMPurify` added to sanitize `dangerouslySetInnerHTML` in email history view (XSS fix)
+- Axios 401 interceptor added — auto-logout on expired or invalid tokens
+- `console.error` calls cleaned to avoid leaking sensitive data
