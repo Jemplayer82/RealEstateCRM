@@ -1,8 +1,12 @@
-# RealEstateCRM
+<img src="assets/fathom-header-banner.svg" alt="Fathom Works — realestatecrm" width="100%">
 
-A full-featured Customer Relationship Management system built for real estate professionals. MERN stack (MongoDB, Express, React, Node.js), fully Dockerized, with security hardening, role-based access control, and a built-in property lookup service powered by HomeHarvest.
+# `$ realestatecrm`
 
-## What It Does
+**A full-featured Customer Relationship Management system built for real estate professionals.** MERN stack (MongoDB, Express, React, Node.js), fully Dockerized, with security hardening, role-based access control, and a built-in property lookup service powered by HomeHarvest.
+
+---
+
+## `[ what it does ]`
 
 - **Contact and Lead Management** — track clients, leads, and their lifecycle through your pipeline
 - **Property Management** — listings with photos, floor plans, virtual tours, documents, and unit tracking for multi-family properties
@@ -15,7 +19,9 @@ A full-featured Customer Relationship Management system built for real estate pr
 - **Property Lookup** — auto-fill property details from MLS data via an integrated Python service
 - **Reporting** — dashboards and analytics
 
-## Stack
+---
+
+## `[ stack ]`
 
 | Component | Technology |
 |-----------|------------|
@@ -28,17 +34,19 @@ A full-featured Customer Relationship Management system built for real estate pr
 | Email | Nodemailer |
 | Deployment | Docker + Docker Compose |
 
-## Quick Start
+---
+
+## `[ quick start ]`
 
 ```bash
-git clone https://github.com/jemplayer82/RealEstateCRM.git
-cd RealEstateCRM
-docker compose up --build
+$ git clone https://github.com/jemplayer82/RealEstateCRM.git
+$ cd RealEstateCRM
+$ docker compose up --build
 ```
 
 On first run, a setup page will guide you through creating the admin account.
 
-### Services
+### services
 
 | Service | Port | Description |
 |---------|------|-------------|
@@ -47,7 +55,9 @@ On first run, a setup page will guide you through creating the admin account.
 | python-service | 5002 | Property lookup via HomeHarvest |
 | mongo | 27017 | MongoDB |
 
-## Environment Variables
+---
+
+## `[ environment variables ]`
 
 Set these under `server.environment` in `docker-compose.yml` or in a `.env` file:
 
@@ -61,21 +71,25 @@ Set these under `server.environment` in `docker-compose.yml` or in a `.env` file
 
 The admin account is created through the first-run setup page — no hardcoded credentials.
 
-## Useful Commands
+---
+
+## `[ useful commands ]`
 
 ```bash
-docker compose up -d          # start in background
-docker compose down           # stop
-docker compose down -v        # stop and wipe database
-docker compose logs server    # view server logs
-docker compose build          # rebuild after code changes
+$ docker compose up -d         # start in background
+$ docker compose down          # stop
+$ docker compose down -v       # stop and wipe database
+$ docker compose logs server   # view server logs
+$ docker compose build         # rebuild after code changes
 ```
 
-## What Has Been Changed From Upstream
+---
+
+## `[ what has been changed from upstream ]`
 
 This project started as a fork but has been significantly reworked. The original UI shell is the only thing that remains from the source; everything else — the backend architecture, security model, deployment setup, and data integrations — has been rebuilt.
 
-### Full Dockerization
+### full dockerization
 
 - `docker-compose.yml` with a 4-service stack (MongoDB, server, client, python-service)
 - `server/Dockerfile` — Node 18 slim with Chromium for Puppeteer
@@ -83,11 +97,11 @@ This project started as a fork but has been significantly reworked. The original
 - `client/nginx.conf` — reverse proxies `/api/` to the server with SPA fallback for React Router
 - `.dockerignore` files to keep builds lean
 
-### Python Property Lookup Service
+### python property lookup service
 
 An additional Flask microservice (`python-service/`) uses HomeHarvest to look up MLS property data by address and auto-fill fields when adding a new property in the CRM.
 
-### Security Hardening (30+ fixes)
+### security hardening (30+ fixes)
 
 **Critical:**
 - JWT secret moved from hardcoded `'secret_key'` to `process.env.JWT_SECRET`
@@ -104,9 +118,9 @@ An additional Flask microservice (`python-service/`) uses HomeHarvest to look up
 
 **File uploads:**
 - Centralized Multer configuration with MIME type allowlists and size limits
-  - Images: JPEG / PNG / GIF / WebP, 5MB max
-  - Documents: images + PDF / Word / Excel, 10MB max
-  - Videos: MP4 / WebM / QuickTime, 50MB max
+- Images: JPEG / PNG / GIF / WebP, 5MB max
+- Documents: images + PDF / Word / Excel, 10MB max
+- Videos: MP4 / WebM / QuickTime, 50MB max
 - All `express.static` routes now require authentication
 
 **Input validation:**
@@ -120,3 +134,7 @@ An additional Flask microservice (`python-service/`) uses HomeHarvest to look up
 - `DOMPurify` added to sanitize `dangerouslySetInnerHTML` in email history view (XSS fix)
 - Axios 401 interceptor added — auto-logout on expired or invalid tokens
 - `console.error` calls cleaned to avoid leaking sensitive data
+
+---
+
+<img src="assets/fathom-footer-banner.svg" alt="Fathom Works — sound the depths before you set a course" width="100%">
