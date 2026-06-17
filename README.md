@@ -92,7 +92,7 @@ This project started as a fork but has been significantly reworked. The original
 ### full dockerization
 
 - `docker-compose.yml` with a 4-service stack (MongoDB, server, client, python-service)
-- `server/Dockerfile` — Node 18 slim with Chromium for Puppeteer
+- `server/Dockerfile` — Node 24 slim with Chromium for Puppeteer
 - `client/Dockerfile` — multi-stage build (Node build step, nginx to serve)
 - `client/nginx.conf` — reverse proxies `/api/` to the server with SPA fallback for React Router
 - `.dockerignore` files to keep builds lean
